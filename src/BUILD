@@ -3,9 +3,12 @@ package(default_visibility = ["//visibility:public"])
 cc_library(
     name = 'util',
     srcs = [
+        'util.cc',
     ],
+    hdrs = glob(['util.h']),
     deps = [
         '//base:base',
+        '//thirdlibs/event:event',
     ],
 )
 
