@@ -5,6 +5,19 @@ cc_library(
     srcs = [
     ],
     deps = [
+        '//base:base',
     ],
-    hdrs = glob(['include/*.h']),
+)
+
+cc_library(
+    name = 'event_base_loop',
+    srcs = [
+        'event_base_loop.cc',
+    ],
+    deps = [
+        '//base:base',
+        ':util',
+        '//thirdlibs/event:event',
+    ],
+    hdrs = glob(['event_base_loop.h']),
 )

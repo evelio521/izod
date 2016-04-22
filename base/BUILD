@@ -5,6 +5,8 @@ cc_library(
     srcs = [
     ],
     deps = [
+        '//thirdlibs/glog:glog',
+        '//thirdlibs/gflags:gflags',
     ],
     hdrs = glob(['*.h']),
 )

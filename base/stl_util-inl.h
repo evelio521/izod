@@ -7,6 +7,7 @@
 
 #ifndef BASE_STL_UTIL_INL_H_
 #define BASE_STL_UTIL_INL_H_
+
 #pragma once
 
 #include <string.h>  // for memcpy
@@ -17,8 +18,10 @@
 #include <cassert>
 
 #include "base/compat.h"
+#include "marcos.h"
 
-namespace base {
+_START_BASE_NAMESPACE_
+
 // Clear internal memory of an STL object.
 // STL clear()/reserve(0) does not always free internal memory allocated
 // This function uses swap/destructor to ensure the internal memory is freed.
@@ -452,5 +455,7 @@ template <typename Collection, typename Key>
 bool ContainsKey(const Collection& collection, const Key& key) {
   return collection.find(key) != collection.end();
 }
-}  // namespace base
+
+_START_BASE_NAMESPACE_
+
 #endif  // BASE_STL_UTIL_INL_H_

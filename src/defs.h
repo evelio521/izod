@@ -11,10 +11,10 @@
  * @brief
  *
  **/
-#ifndef SERVER_INCLUDE_DEFS_H_
-#define SERVER_INCLUDE_DEFS_H_
+#ifndef SERVER_SRC_DEFS_H_
+#define SERVER_SRC_DEFS_H_
 
-#include "config.h"
+#include "base/marcos.h"
 
 _START_SERVER_NAMESPACE_
 
@@ -28,5 +28,5 @@ _END_CSTR_NAMESPACE_
 
 _END_SERVER_NAMESPACE_
 
-#endif  // SERVER_INCLUDE_DEFS_H_
+#endif  // SERVER_SRC_DEFS_H_
 

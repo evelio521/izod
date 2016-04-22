@@ -8,6 +8,8 @@
 #include <limits.h>         // So we can set the bounds of our types
 #include <stddef.h>         // For size_t
 #include <string.h>         // for memcpy
+
+#include "base/marcos.h"
 #include "base/port.h"    // Types that only need exist on certain systems
 #ifndef COMPILER_MSVC
 // stdint.h is part of C99 but MSVC doesn't have it.
@@ -375,8 +377,8 @@ inline void ignore_result(const T& ignored) {
 // constructor declared as
 //       explicit MyClass(LinkerInitialized x) {}
 // and invoked as
-//       static MyClass my_variable_name(LINKER_INITIALIZED);
-namespace base {
+
+_START_BASE_NAMESPACE_
 enum LinkerInitialized {
   LINKER_INITIALIZED
 };
@@ -386,7 +388,7 @@ const uint64 kMBytes = 1024 * kKBytes;
 const uint64 kGBytes = 1024 * kMBytes;
 const uint64 kTBytes = 1024 * kGBytes;
 const uint64 kPBytes = 1024 * kTBytes;
-} // base
+_END_BASE_NAMESPACE_
 
 
 #endif  // BASE_BASICTYPES_H_

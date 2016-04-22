@@ -11,11 +11,12 @@
  * @brief
  *
  **/
-#ifndef SERVER_INCLUDE_UTIL_H_
-#define SERVER_INCLUDE_UTIL_H_
+#ifndef SERVER_SRC_UTIL_H_
+#define SERVER_SRC_UTIL_H_
 
 #include <string.h>
-#include "config.h"
+
+#include "../base/marcos.h"
 
 _START_SERVER_NAMESPACE_
 
@@ -144,7 +145,6 @@ evhttp_response_phrase_internal(int code)
 }
 
 _END_SERVER_NAMESPACE_
-
 
 #endif  // SERVER_INCLUDE_UTIL_H_
 
