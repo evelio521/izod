@@ -1,0 +1,64 @@
+/*******************************************************************************
+ *
+ * Copyright (c) 2016 evelio, Inc. All Rights Reserved
+ *
+ *******************************************************************************/
+
+
+
+/**
+ * @file:   handlers.cc
+ * @author: sunqiang(evelio@126.com)
+ * @date:   2016-04-23 11:03:07
+ * @brief
+ *
+ **/
+
+
+#include "src/handlers.h"
+
+#include <sys/stat.h>
+#include <dirent.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <string>
+
+#include "base/log.h"
+#include "base/string_util.h"
+#include "src/util.h"
+#include "src/request.h"
+#include "src/response.h"
+#include "thirdlibs/gflags/gflags.h"
+
+_START_SERVER_NAMESPACE_
+
+Handler::Handler(string regpath,
+    base::ResultCallback2<bool, Request*, Response*>* callback)
+  : callback_(callback), path(regpath) {
+}
+
+Handler::~Handler() {
+}
+
+JsonHandler::JsonHandler(string regpath,
+    base::ResultCallback2<bool, Request*, Response*>* callback)
+  : Handler(regpath, callback) {
+}
+
+JsonHandler::~JsonHandler() {
+}
+
+bool JsonHandler::HttpHandler(Request* request,
+                                 Response* response) {
+  LOG(INFO) << "receive request:" << request->GetRequestUri();
+  if (FLAGS_v >= 3) {
+    request->Dump();
+  }
+  if (!callback_->Run(request, response)) {
+    LOG(WARNING) << "fail to treat request:" << request->GetRequestUri();
+  }
+  return response->SendToClient();
+}
+
+
+_END_SERVER_NAMESPACE_

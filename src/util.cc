@@ -16,8 +16,12 @@
 
 #include "src/util.h"
 
+#include <string>
+
 #include <string.h>
 #include "thirdlibs/event/include/event2/util.h"
+#include "base/compat.h"
+
 _START_SERVER_NAMESPACE_
 
 static const struct table_entry {
