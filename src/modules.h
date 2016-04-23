@@ -51,7 +51,7 @@ struct HandlerWrapper {
 
 class Modules {
  public:
-  Modules(int listen_port, size_t threads_num);
+  Modules();
   virtual ~Modules();
 
   bool RegisterHttpHandler(const string& path, Handler* handler);

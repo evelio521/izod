@@ -80,4 +80,12 @@ cc_library(
     ],
     hdrs = glob(['modules.h']),
 )
-
+cc_binary(
+    name = 'server_main',
+    srcs = ['server_main.cc'],
+    deps = [':modules',
+            ':handlers',
+            '//base:base',
+            '//thirdlibs/event:event',
+            ],
+)

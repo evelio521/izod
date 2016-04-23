@@ -39,16 +39,18 @@ Handler::Handler(string regpath)
 Handler::~Handler() {
 }
 
-JsonHandler::JsonHandler(string regpath)
+DefaultHandler::DefaultHandler(string regpath)
   : Handler(regpath) {
 }
 
-JsonHandler::~JsonHandler() {
+DefaultHandler::~DefaultHandler() {
 }
 
-int JsonHandler::HttpHandler(Request* request,
+bool DefaultHandler::HttpHandler(Request* request,
                              Response* response) {
-  return HTTP_BADREQUEST;
+  request->Dump();
+  response->AppendBuffer("Dump done!");
+  return response->SendToClient();
 }
 
 

@@ -31,7 +31,7 @@ class Handler {
   Handler(string regpath);
   virtual ~Handler();
 
-  virtual int HttpHandler(Request* request, Response* response) = 0;
+  virtual bool HttpHandler(Request* request, Response* response) = 0;
 
  protected:
   string path;
@@ -40,16 +40,16 @@ class Handler {
   DISALLOW_COPY_AND_ASSIGN(Handler);
 };
 
-class JsonHandler : public Handler {
+class DefaultHandler : public Handler {
  public:
-  JsonHandler(string regpath);
-  virtual ~JsonHandler();
+  DefaultHandler(string regpath);
+  virtual ~DefaultHandler();
 
   //  Call callback function, then send back response.
-  virtual int HttpHandler(Request* request, Response* response);
+  virtual bool HttpHandler(Request* request, Response* response);
 
  private:
-  DISALLOW_COPY_AND_ASSIGN(JsonHandler);
+  DISALLOW_COPY_AND_ASSIGN(DefaultHandler);
 };
 
 _END_SERVER_NAMESPACE_

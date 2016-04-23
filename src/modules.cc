@@ -46,6 +46,8 @@
 
 DEFINE_string(doc_root, "", "");
 DEFINE_int32(http_browser_expire_time, 24 * 60 * 60, "Expire time");
+DEFINE_int32(listen_port, 8888, "default listen port");
+DEFINE_int32(threads_num, 12, "default threads numbers");
 
 _START_SERVER_NAMESPACE_
 
@@ -173,10 +175,9 @@ void send_document_cb(struct evhttp_request *req, void *arg) {
     evbuffer_free(evb);
 }
 
-Modules::Modules(int listen_port, size_t threads_num)
-    : listen_port_(listen_port),
-      threads_num_(threads_num) {
-
+Modules::Modules()
+    : listen_port_(FLAGS_listen_port),
+      threads_num_(FLAGS_threads_num) {
   thread_pool_.reset(new base::FixedSizeThreadPool(threads_num_));
 }
 
