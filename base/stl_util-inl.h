@@ -456,6 +456,6 @@ bool ContainsKey(const Collection& collection, const Key& key) {
   return collection.find(key) != collection.end();
 }
 
-_START_BASE_NAMESPACE_
+_END_BASE_NAMESPACE_
 
 #endif  // BASE_STL_UTIL_INL_H_
