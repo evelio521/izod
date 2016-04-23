@@ -26,6 +26,7 @@
 
 #include "base/basictypes.h"
 #include "base/string_util.h"
+#include "base/marcos.h"
 
 #if defined(OS_POSIX)
 // For struct timeval.
@@ -38,7 +39,7 @@
 #include <windows.h>
 #endif
 
-namespace base {
+_START_BASE_NAMESPACE_
 
 inline int64 GetTimeInMs() {
   struct timeval now;
@@ -591,6 +592,6 @@ inline string GetUTCFormatTime(const Time& time) {
       exploded.second);
 }
 
-}  // namespace base
+_END_BASE_NAMESPACE_
 
 #endif  // BASE_TIME_H_

@@ -4,8 +4,9 @@
 #define BASE_MUTEX_H_
 
 #include <pthread.h>
+#include "base/marcos.h"
 
-namespace base {
+_START_BASE_NAMESPACE_
 
 class Mutex {
  public:
@@ -86,5 +87,5 @@ class CondVar {
  private:
   pthread_cond_t cv_;
 };
-}  // namespace base
+_END_BASE_NAMESPACE_
 #endif  // BASE_MUTEX_H_

@@ -16,7 +16,7 @@
 #include "base/string_util.h"
 #include "base/utf_string_conversions.h"
 
-namespace base {
+_START_BASE_NAMESPACE_
 
 int c16memcmp(const char16* s1, const char16* s2, size_t n) {
   // We cannot call memcmp because that changes the semantics.
@@ -66,7 +66,7 @@ char16* c16memset(char16* s, char16 c, size_t n) {
   return s_orig;
 }
 
-}  // namespace base
+_END_BASE_NAMESPACE_
 
 template class std::basic_string<char16, base::string16_char_traits>;
 

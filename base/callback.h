@@ -19,6 +19,7 @@
 
 #include "base/hash_tables.h"
 #include "base/log.h"
+#include "base/marcos.h"
 
 namespace operations_research {
 
@@ -37,7 +38,7 @@ class Closure {
   virtual void CheckIsRepeatable() const = 0;
 };
 
-namespace base {
+_START_BASE_NAMESPACE_
 template <class R>
 class ResultCallback {
  public:
@@ -2294,5 +2295,5 @@ inline typename _FunctionResultCallback_1_0<false, R, P1>::base*
 NewPermanentCallback(R (*function)(P1), P1 p1) {
   return new _FunctionResultCallback_1_0<false, R, P1>(function, p1);
 }
-}
+_END_BASE_NAMESPACE_
 #endif  // BASE_CALLBACK_H_

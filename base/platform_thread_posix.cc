@@ -21,12 +21,13 @@
 #endif
 
 #include "base/log.h"
+#include "base/marcos.h"
 //#include "base/safe_strerror_posix.h"
 
 #if defined(OS_MACOSX)
-namespace base {
+_START_BASE_NAMESPACE_
 void InitThreading();
-}  // namespace base
+_END_BASE_NAMESPACE_
 #endif
 
 static void* ThreadFunc(void* closure) {

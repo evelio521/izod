@@ -5,7 +5,7 @@
 #include "base/at_exit.h"
 #include "base/log.h"
 
-namespace base {
+_START_BASE_NAMESPACE_
 
 // Keep a stack of registered AtExitManagers.  We always operate on the most
 // recent, and we should never have more than one outside of testing, when we
@@ -64,4 +64,4 @@ void AtExitManager::ProcessCallbacksNow() {
   }
 }
 
-}  // namespace base
+_END_BASE_NAMESPACE_

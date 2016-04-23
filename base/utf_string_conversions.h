@@ -9,10 +9,11 @@
 
 #include "base/string16.h"
 #include "base/compat.h"
+#include "base/marcos.h"
 
-namespace base {
+_START_BASE_NAMESPACE_
 class StringPiece;
-}
+_END_BASE_NAMESPACE_
 
 // These convert between UTF-8, -16, and -32 strings. They are potentially slow,
 // so avoid unnecessary conversions. The low-level versions return a boolean

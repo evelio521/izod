@@ -6,9 +6,9 @@
 #include <cstring>
 
 #include "thirdlibs/glog/logging.h"
+#include "base/marcos.h"
 
-namespace base {
-
+_START_BASE_NAMESPACE_
 Thread::Thread(bool joinable)
     : tid_(0), isrunning_(false), isjoinable_(joinable) {}
 
@@ -48,4 +48,4 @@ void Thread::Join() {
   isrunning_ = false;
 }
 
-}  // namespace base
+_END_BASE_NAMESPACE_

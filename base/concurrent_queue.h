@@ -8,8 +8,9 @@
 
 #include "base/basictypes.h"
 #include "base/mutex.h"
+#include "base/marcos.h"
 
-namespace base {
+_START_BASE_NAMESPACE_
 
 template<typename Data>
 class ConcurrentQueue {
@@ -107,5 +108,5 @@ class FixedSizeConQueue : public ConcurrentQueue<Data> {
   CondVar cond_var_;
   DISALLOW_COPY_AND_ASSIGN(FixedSizeConQueue);
 };
-}  //  namespace base
+_END_BASE_NAMESPACE_
 #endif  // BASE_CONCURRENT_QUEUE_H_

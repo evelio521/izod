@@ -6,8 +6,9 @@
 #include "base/log.h"
 #include "base/thread.h"
 #include "base/fixed_size_thread_pool.h"
+#include "base/marcos.h"
 
-namespace base {
+_START_BASE_NAMESPACE_
 
 class JobThread : public Thread {
  public:
@@ -60,4 +61,4 @@ void FixedSizeThreadPool::Add(const std::function<void()>& callback) {
   callbacks_.Push(callback);
 }
 
-}  // namespace grpc
+_END_BASE_NAMESPACE_

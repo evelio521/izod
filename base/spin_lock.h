@@ -6,8 +6,9 @@
 
 #include <pthread.h>
 #include "base/basictypes.h"
+#include "base/marcos.h"
 
-namespace base {
+_START_BASE_NAMESPACE_
 class SpinLock {
  public:
   SpinLock() {
@@ -29,5 +30,5 @@ class SpinLock {
   pthread_spinlock_t lock_;
   DISALLOW_COPY_AND_ASSIGN(SpinLock);
 };
-}  // namespace base
+_END_BASE_NAMESPACE_
 #endif  // BASE_SPIN_LOCK_H_

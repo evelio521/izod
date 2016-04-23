@@ -30,8 +30,9 @@
 
 #include "base/basictypes.h"
 #include "base/port.h"
+#include "base/marcos.h"
 
-namespace base {
+_START_BASE_NAMESPACE_
 namespace subtle {
 
 // Bug 1308991.  We need this for /Wp64, to mark it safe for AtomicWord casting.
@@ -123,7 +124,7 @@ Atomic64 Release_Load(volatile const Atomic64* ptr);
 #endif  // ARCH_CPU_64_BITS
 
 }  // namespace base::subtle
-}  // namespace base
+_END_BASE_NAMESPACE_
 
 // Include our platform specific implementation.
 #if defined(OS_WIN) && defined(COMPILER_MSVC) && defined(ARCH_CPU_X86_FAMILY)

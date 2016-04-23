@@ -24,8 +24,9 @@
 
 #include "base/basictypes.h"
 #include "base/compat.h"
+#include "base/marcos.h"
 
-namespace base {
+_START_BASE_NAMESPACE_
 
 class StringPiece {
  public:
@@ -190,6 +191,6 @@ inline bool operator>=(const StringPiece& x, const StringPiece& y) {
 // allow StringPiece to be logged (needed for unit testing).
 extern std::ostream& operator<<(std::ostream& o, const StringPiece& piece);
 
-}  // namespace base
+_END_BASE_NAMESPACE_
 
 #endif  // BASE_STRING_PIECE_H_

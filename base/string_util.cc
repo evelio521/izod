@@ -296,7 +296,7 @@ class String16ToDoubleTraits {
 }  // namespace
 
 
-namespace base {
+_START_BASE_NAMESPACE_
 
 bool IsWprintfFormatPortable(const wchar_t* format) {
   for (const wchar_t* position = format; *position != '\0'; ++position) {
@@ -334,7 +334,7 @@ bool IsWprintfFormatPortable(const wchar_t* format) {
 }
 
 
-}  // namespace base
+_END_BASE_NAMESPACE_
 
 
 const string& EmptyString() {

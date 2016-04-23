@@ -9,9 +9,9 @@
 
 #include "base/basictypes.h"
 #include "base/mutex.h"
+#include "base/marcos.h"
 
-namespace base {
-
+_START_BASE_NAMESPACE_
 // This class provides a facility similar to the CRT atexit(), except that
 // we control when the callbacks are executed. Under Windows for a DLL they
 // happen at a really bad time and under the loader lock. This facility is
@@ -71,6 +71,6 @@ class ShadowingAtExitManager : public AtExitManager {
   ShadowingAtExitManager() : AtExitManager(true) {}
 };
 
-}  // namespace base
+_END_BASE_NAMESPACE_
 
 #endif  // BASE_AT_EXIT_H_
