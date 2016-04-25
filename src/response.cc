@@ -68,7 +68,7 @@ void Response::AppendBuffer(const string& buff) {
 // #define HTTP_EXPECTATIONFAILED  417 /**< we can't handle this expectation */
 // #define HTTP_INTERNAL           500     /**< internal error */
 // #define HTTP_NOTIMPLEMENTED     501     /**< not implemented */
-// :q#define HTTP_SERVUNAVAIL    503 /**< the server is not available */
+// #define HTTP_SERVUNAVAIL    503 /**< the server is not available */
 
 void Response::SetResponseCode(int code) {
   code_ = code;

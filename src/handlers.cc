@@ -54,7 +54,9 @@ bool DefaultHandler::HttpHandler(Request* request,
                              Response* response) {
   request->Dump();
   //response->AppendBuffer("No Service!");
-  if (Excute(request, response)) {
+  In in;
+  request->GetQueryParams(&in);
+  if (Excute(request, response, in)) {
     return response->SendToClient();
   }
   return false;
@@ -75,10 +77,13 @@ bool JsonHandler::HttpHandler(Request* request,
                              Response* response) {
   request->Dump();
   response->SetJsonContentType();
-  if (Excute(request, response)) {
+  In in;
+  request->GetQueryParams(&in);
+  if (Excute(request, response, in)) {
     return response->SendToClient();
   }
   response->AppendBuffer("{\"error\":\"bad json\"}");
+
   return false;
 }
 
@@ -97,8 +102,9 @@ bool BinaryHandler::HttpHandler(Request* request,
                              Response* response) {
   request->Dump();
   response->SetBinaryContentType();
-
-  if (Excute(request, response)) {
+  In in;
+  request->GetQueryParams(&in);
+  if (Excute(request, response, in)) {
     return response->SendToClient();
   }
   string str = "bad buffer";

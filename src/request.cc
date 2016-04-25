@@ -36,7 +36,7 @@ void ParseKvlist(
   vector<string> pairs;
   vector<string> kvpair;
   SplitString(line, key_value_pair_delimiter, &pairs);
-  VLOG(1) << "pairs num:" << pairs.size();
+
   for (size_t i = 0; i < pairs.size(); ++i) {
     kvpair.clear();
     string::size_type index = pairs[i].find(key_value_delimiter);
@@ -81,7 +81,8 @@ void ParseUrlParams(const string& query,
   }
 }
 
-Request::Request(struct evhttp_request* request) : request_(request) {
+Request::Request(struct evhttp_request* request) :
+    request_(request) {
 }
 
 Request::~Request() {

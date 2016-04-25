@@ -34,8 +34,13 @@ _START_SERVER_NAMESPACE_
 class TestHandler : public DefaultHandler {
  public:
   TestHandler(string regstr):DefaultHandler(regstr){}
-  bool Excute(Request* request, Response* response) {
-    response->AppendBuffer("Test!");
+  bool Excute(Request* request, Response* response, const In &in) {
+    //string query = request->ExtractParam("query");
+    //cout << "-----" << query<< "---------"<<endl;
+    map<string, string>::const_iterator it = in.find("query");
+    if (it != in.end()){
+      response->AppendBuffer(it->second);
+    }
     return true;
   }
 };

@@ -26,6 +26,7 @@ _START_SERVER_NAMESPACE_
 class Request;
 class Response;
 
+
 class Handler {
  public:
   Handler(string regpath);
@@ -45,7 +46,7 @@ class DefaultHandler : public Handler {
   DefaultHandler(string regpath);
   virtual ~DefaultHandler();
   virtual string GetClassName();
-  virtual bool Excute(Request* request, Response* response) = 0;
+  virtual bool Excute(Request* request, Response* response, const In &in) = 0;
   //  Call callback function, then send back response.
   virtual bool HttpHandler(Request* request, Response* response);
 
@@ -58,7 +59,7 @@ class JsonHandler : public Handler {
   JsonHandler(string regpath);
   virtual ~JsonHandler();
   virtual string GetClassName();
-  virtual bool Excute(Request* request, Response* response) = 0;
+  virtual bool Excute(Request* request, Response* response, const In &in) = 0;
   //  Call callback function, then send back response.
   virtual bool HttpHandler(Request* request, Response* response);
 
@@ -71,7 +72,7 @@ class BinaryHandler : public Handler {
   BinaryHandler(string regpath);
   virtual ~BinaryHandler();
   virtual string GetClassName();
-  virtual bool Excute(Request* request, Response* response) = 0;
+  virtual bool Excute(Request* request, Response* response, const  In &in) = 0;
   //  Call callback function, then send back response.
   virtual bool HttpHandler(Request* request, Response* response);
 

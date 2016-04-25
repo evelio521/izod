@@ -54,6 +54,7 @@ class Request {
 
  private:
   struct evhttp_request* request_;
+  //map<string, string>* params;
   DISALLOW_COPY_AND_ASSIGN(Request);
 };
 
