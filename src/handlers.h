@@ -30,7 +30,7 @@ class Handler {
  public:
   Handler(string regpath);
   virtual ~Handler();
-
+  virtual string GetClassName();
   virtual bool HttpHandler(Request* request, Response* response) = 0;
 
  protected:
@@ -44,12 +44,39 @@ class DefaultHandler : public Handler {
  public:
   DefaultHandler(string regpath);
   virtual ~DefaultHandler();
-
+  virtual string GetClassName();
+  virtual bool Excute(Request* request, Response* response) = 0;
   //  Call callback function, then send back response.
   virtual bool HttpHandler(Request* request, Response* response);
 
  private:
   DISALLOW_COPY_AND_ASSIGN(DefaultHandler);
+};
+
+class JsonHandler : public Handler {
+ public:
+  JsonHandler(string regpath);
+  virtual ~JsonHandler();
+  virtual string GetClassName();
+  virtual bool Excute(Request* request, Response* response) = 0;
+  //  Call callback function, then send back response.
+  virtual bool HttpHandler(Request* request, Response* response);
+
+ private:
+  DISALLOW_COPY_AND_ASSIGN(JsonHandler);
+};
+
+class BinaryHandler : public Handler {
+ public:
+  BinaryHandler(string regpath);
+  virtual ~BinaryHandler();
+  virtual string GetClassName();
+  virtual bool Excute(Request* request, Response* response) = 0;
+  //  Call callback function, then send back response.
+  virtual bool HttpHandler(Request* request, Response* response);
+
+ private:
+  DISALLOW_COPY_AND_ASSIGN(BinaryHandler);
 };
 
 _END_SERVER_NAMESPACE_

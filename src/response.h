@@ -29,9 +29,10 @@ class Response {
   ~Response();
 
   void AppendHeader(const string& key, const string& value);
-  // helper function to set "Content-Type" to html/json/...
+  // helper function to set "Content-Type" to html/json/binary...
   void SetJsonContentType();
   void SetHtmlContentType();
+  void SetBinaryContentType();
 
   void AppendBuffer(const string& buff);
   void SetResponseCode(int code);

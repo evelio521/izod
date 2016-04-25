@@ -29,18 +29,29 @@
 #include "thirdlibs/event/include/event2/buffer.h"
 #include "thirdlibs/gflags/gflags.h"
 
+
+_START_SERVER_NAMESPACE_
+class TestHandler : public DefaultHandler {
+ public:
+  TestHandler(string regstr):DefaultHandler(regstr){}
+  bool Excute(Request* request, Response* response) {
+    response->AppendBuffer("Test!");
+    return true;
+  }
+};
+
+_END_SERVER_NAMESPACE_
+
 int main(int argc, char **argv) {
   google::ParseCommandLineFlags(&argc, &argv, false);
   server::Modules md;
 
-  server::DefaultHandler dh("test");
+  server::TestHandler dh("test");
   std::cout << "++++++" <<md.RegisterHttpHandler("/test",&dh);
   md.Server();
   return 0;
 
 }
-
-
 
 
 
