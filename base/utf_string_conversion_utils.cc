@@ -6,7 +6,7 @@
 
 #include "base/icu_utf.h"
 
-namespace base {
+_START_BASE_NAMESPACE_
 
 // ReadUnicodeCharacter --------------------------------------------------------
 
@@ -145,4 +145,4 @@ void PrepareForUTF16Or32Output(const char* src,
 template void PrepareForUTF16Or32Output(const char*, size_t, std::wstring*);
 template void PrepareForUTF16Or32Output(const char*, size_t, string16*);
 
-}  // namespace base
+_END_BASE_NAMESPACE_

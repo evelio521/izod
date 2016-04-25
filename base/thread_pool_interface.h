@@ -7,8 +7,9 @@
 #include <functional>
 
 #include "base/basictypes.h"
+#include "base/marcos.h"
 
-namespace base {
+_START_BASE_NAMESPACE_
 // A thread pool interface for running callbacks.
 class ThreadPoolInterface {
  public:
@@ -21,6 +22,6 @@ class ThreadPoolInterface {
     return -1;
   }
 };
-}  // namespace base
+_END_BASE_NAMESPACE_
 
 #endif  // BASE_THREAD_POOL_INTERFACE_H

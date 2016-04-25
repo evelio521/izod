@@ -205,6 +205,7 @@ bool Modules::RegisterHttpHandler(const string& path, Handler* handler) {
     << " exist, fail to register new handler for it";
     return false;
   }
+
   HandlerWrapper* wrapper = new HandlerWrapper;
   wrapper->handler = handler;
   wrapper->pool = thread_pool_.get();

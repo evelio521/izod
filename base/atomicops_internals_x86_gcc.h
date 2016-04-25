@@ -7,6 +7,8 @@
 #ifndef BASE_ATOMICOPS_INTERNALS_X86_GCC_H_
 #define BASE_ATOMICOPS_INTERNALS_X86_GCC_H_
 
+#include "base/marcos.h"
+
 //  This struct is not part of the public API of this module; clients may not
 //  use it.
 //  Features of this x86.  Values may not be correct before main() is run,
@@ -29,7 +31,7 @@ static struct AtomicOps_x86CPUFeatureStruct AtomicOps_Internalx86CPUFeatures = {
 
 #define ATOMICOPS_COMPILER_BARRIER() __asm__ __volatile__("" : : : "memory")
 
-namespace base {
+_START_BASE_NAMESPACE_
 namespace subtle {
 
 //  32-bit low-level operations on any platform.
@@ -263,7 +265,7 @@ inline Atomic64 Release_CompareAndSwap(volatile Atomic64* ptr,
 
 #endif    //  defined(__x86_64__)
 }   //  namespace base::subtle
-}   //  namespace base
+_END_BASE_NAMESPACE_
 
 #undef ATOMICOPS_COMPILER_BARRIER
 

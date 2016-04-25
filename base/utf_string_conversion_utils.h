@@ -9,8 +9,9 @@
 
 #include "base/string16.h"
 #include "base/compat.h"
+#include "base/marcos.h"
 
-namespace base {
+_START_BASE_NAMESPACE_
 
 inline bool IsValidCodepoint(uint32 code_point) {
   // Excludes the surrogate code points ([0xD800, 0xDFFF]) and
@@ -90,6 +91,6 @@ void PrepareForUTF8Output(const CHAR* src, size_t src_len, string* output);
 template<typename STRING>
 void PrepareForUTF16Or32Output(const char* src, size_t src_len, STRING* output);
 
-}  // namespace base
+_END_BASE_NAMESPACE_
 
 #endif  // BASE_UTF_STRING_CONVERSION_UTILS_H_

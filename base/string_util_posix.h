@@ -12,8 +12,9 @@
 
 #include "base/basictypes.h"
 #include "base/log.h"
+#include "base/marcos.h"
 
-namespace base {
+_START_BASE_NAMESPACE_
 
 inline int strncmp16(const char16* s1, const char16* s2, size_t count) {
 #if defined(WCHAR_T_IS_UTF16)
@@ -29,6 +30,6 @@ inline int vswprintf(wchar_t* buffer, size_t size,
   return ::vswprintf(buffer, size, format, arguments);
 }
 
-}  // namespace base
+_END_BASE_NAMESPACE_
 
 #endif  // BASE_STRING_UTIL_POSIX_H_

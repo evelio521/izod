@@ -39,6 +39,10 @@ Handler::Handler(string regpath)
 Handler::~Handler() {
 }
 
+string Handler::GetClassName() {
+  return "Handler";
+}
+
 DefaultHandler::DefaultHandler(string regpath)
   : Handler(regpath) {
 }
@@ -49,9 +53,61 @@ DefaultHandler::~DefaultHandler() {
 bool DefaultHandler::HttpHandler(Request* request,
                              Response* response) {
   request->Dump();
-  response->AppendBuffer("Dump done!");
-  return response->SendToClient();
+  //response->AppendBuffer("No Service!");
+  if (Excute(request, response)) {
+    return response->SendToClient();
+  }
+  return false;
 }
 
+string DefaultHandler::GetClassName() {
+  return "DefaultHandler";
+}
+
+JsonHandler::JsonHandler(string regpath)
+  : Handler(regpath) {
+}
+
+JsonHandler::~JsonHandler() {
+}
+
+bool JsonHandler::HttpHandler(Request* request,
+                             Response* response) {
+  request->Dump();
+  response->SetJsonContentType();
+  if (Excute(request, response)) {
+    return response->SendToClient();
+  }
+  response->AppendBuffer("{\"error\":\"bad json\"}");
+  return false;
+}
+
+string JsonHandler::GetClassName() {
+  return "JsonHandler";
+}
+
+BinaryHandler::BinaryHandler(string regpath)
+  : Handler(regpath) {
+}
+
+BinaryHandler::~BinaryHandler() {
+}
+
+bool BinaryHandler::HttpHandler(Request* request,
+                             Response* response) {
+  request->Dump();
+  response->SetBinaryContentType();
+
+  if (Excute(request, response)) {
+    return response->SendToClient();
+  }
+  string str = "bad buffer";
+  response->AppendBuffer(str);
+  return false;
+}
+
+string BinaryHandler::GetClassName() {
+  return "BinaryHandler";
+}
 
 _END_SERVER_NAMESPACE_

@@ -7,8 +7,9 @@
 
 #include <pthread.h>
 #include "base/basictypes.h"
+#include "base/marcos.h"
 
-namespace base {
+_START_BASE_NAMESPACE_
 
 class Thread {
  public:
@@ -44,6 +45,6 @@ class Thread {
   DISALLOW_COPY_AND_ASSIGN(Thread);
 };
 
-}  // namespace base
+_END_BASE_NAMESPACE_
 
 #endif  // BASE_THREAD_H__

@@ -47,6 +47,10 @@ void Response::SetHtmlContentType() {
   AppendHeader("Content-Type", "text/html; charset=utf-8");
 }
 
+void Response::SetBinaryContentType() {
+  AppendHeader("Content-Type", "application/octet-stream charset=utf-8");
+}
+
 void Response::AppendBuffer(const string& buff) {
     content_.append(buff);
 }

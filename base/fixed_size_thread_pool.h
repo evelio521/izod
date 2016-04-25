@@ -12,8 +12,9 @@
 #include "base/thread_pool_interface.h"
 #include "base/compat.h"
 #include "base/basictypes.h"
+#include "base/marcos.h"
 
-namespace base {
+_START_BASE_NAMESPACE_
 class JobThread;
 
 class FixedSizeThreadPool : public ThreadPoolInterface {
@@ -28,6 +29,6 @@ class FixedSizeThreadPool : public ThreadPoolInterface {
   std::vector<JobThread*> threads_;
 };
 
-}  // namespace grpc
+_END_BASE_NAMESPACE_
 
 #endif  // BASE_FIXED_SIZE_THREAD_POOL_H

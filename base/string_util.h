@@ -17,10 +17,11 @@
 #include "base/compat.h"
 #include "base/string16.h"
 #include "base/string_piece.h"  // For implicit conversions.
+#include "base/marcos.h"
 
 // Safe standard library wrappers for all platforms.
 
-namespace base {
+_START_BASE_NAMESPACE_
 // C standard-library functions like "strncasecmp" and "snprintf" that aren't
 // cross-platform are provided as "strncasecmp", and their prototypes
 // are listed below.  These functions are then implemented as inline calls
@@ -737,6 +738,6 @@ bool SplitUTF8String(const string& str,
 
 string UTF8CodeToUTF8String(int32_t code);
 
-}  // namespace base
+_END_BASE_NAMESPACE_
 
 #endif  // BASE_STRING_UTIL_H_

@@ -8,7 +8,7 @@
 
 #include "base/string_piece.h"
 
-namespace base {
+_START_BASE_NAMESPACE_
 
 typedef StringPiece::size_type size_type;
 
@@ -216,4 +216,4 @@ StringPiece StringPiece::substr(size_type pos, size_type n) const {
 
 const StringPiece::size_type StringPiece::npos = size_type(-1);
 
-}  // namespace base
+_END_BASE_NAMESPACE_

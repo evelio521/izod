@@ -9,7 +9,7 @@
 
 #include "base/log.h"
 
-namespace base {
+_START_BASE_NAMESPACE_
 
 BenchTimer::BenchTimer(const string& name,int repeat_times)
   : name_(name), repeat_times_(repeat_times) {
@@ -108,4 +108,4 @@ Time Time::LocalMidnight() const {
   return FromLocalExploded(exploded);
 }
 
-}  // namespace base
+_END_BASE_NAMESPACE_

@@ -4,8 +4,9 @@
 
 #include "base/log.h"
 #include "base/time.h"
+#include "base/marcos.h"
 
-namespace base {
+_START_BASE_NAMESPACE_
 
 Mutex::Mutex() {
   pthread_mutex_init(&mutex_, 0);
@@ -111,4 +112,4 @@ void CondVar::SignalAll() {
   CHECK(0 == pthread_cond_broadcast(&cv_));
 }
 
-}  // namespace base
+_END_BASE_NAMESPACE_

@@ -30,6 +30,7 @@
 #include <string>
 
 #include "base/basictypes.h"
+#include "base/marcos.h"
 
 #if defined(WCHAR_T_IS_UTF16)
 
@@ -40,7 +41,7 @@ typedef std::wstring string16;
 
 typedef uint16 char16;
 
-namespace base {
+_START_BASE_NAMESPACE_
 
 // char16 versions of the functions required by string16_char_traits; these
 // are based on the wide character functions of similar names ("w" or "wcs"
@@ -121,7 +122,7 @@ struct string16_char_traits {
   }
 };
 
-}  // namespace base
+_END_BASE_NAMESPACE_
 
 // The string class will be explicitly instantiated only once, in string16.cc.
 //
