@@ -35,12 +35,4 @@
 /* use in util.cc*/
 #define MEMBERSOF(x) (sizeof(x)/sizeof(x[0]))
 
-#define HANDLER "Handler"
-
-#define DEFAULTHANDLER "DefaultHandler"
-
-#define JSONHANDLER "JsonHanler"
-
-#define BINARYHANDLER "BinaryHandler"
-
 #endif  //  SERVER_BASE_MARCOS_H_
