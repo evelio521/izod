@@ -32,7 +32,7 @@ void TestModules::Init() {
   RegisterHttpHandler(new server::TestDefaultHandler());
   RegisterHttpHandler(new server::TestJsonHandler());
 }
-static TestModules* TestModules::Instance() {
+TestModules* TestModules::Instance() {
   return g_module;
 }
 
