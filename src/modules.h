@@ -54,8 +54,9 @@ class Modules {
   Modules();
   virtual ~Modules();
 
-  bool RegisterHttpHandler(const string& path, Handler* handler);
+  bool RegisterHttpHandler(Handler* handler);
   void Server();
+  virtual void Init() = 0;
 
   const string& uri_root() const {
     return uri_root_;

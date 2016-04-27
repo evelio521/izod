@@ -50,6 +50,10 @@ DefaultHandler::DefaultHandler(string regpath)
 DefaultHandler::~DefaultHandler() {
 }
 
+string DefaultHandler::GetPathName() {
+  return path;
+}
+
 bool DefaultHandler::HttpHandler(Request* request,
                              Response* response) {
   request->Dump();
@@ -71,6 +75,10 @@ JsonHandler::JsonHandler(string regpath)
 }
 
 JsonHandler::~JsonHandler() {
+}
+
+string JsonHandler::GetPathName() {
+  return path;
 }
 
 bool JsonHandler::HttpHandler(Request* request,
@@ -96,6 +104,10 @@ BinaryHandler::BinaryHandler(string regpath)
 }
 
 BinaryHandler::~BinaryHandler() {
+}
+
+string BinaryHandler::GetPathName() {
+  return path;
 }
 
 bool BinaryHandler::HttpHandler(Request* request,

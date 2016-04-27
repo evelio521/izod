@@ -24,6 +24,7 @@
 #include "src/response.h"
 #include "src/modules.h"
 #include "src/handlers.h"
+#include "src/defs.h"
 #include "src/event_base_loop.h"
 #include "thirdlibs/event/include/event2/http.h"
 #include "thirdlibs/event/include/event2/buffer.h"
@@ -33,7 +34,7 @@
 _START_SERVER_NAMESPACE_
 class TestHandler : public DefaultHandler {
  public:
-  TestHandler(string regstr):DefaultHandler(regstr){}
+  TestHandler():DefaultHandler(cstr::testRequest()){}
   bool Excute(Request* request, Response* response, const In &in) {
     //string query = request->ExtractParam("query");
     //cout << "-----" << query<< "---------"<<endl;
@@ -44,16 +45,19 @@ class TestHandler : public DefaultHandler {
     return true;
   }
 };
-
+class TestModules : public Modules {
+ public:
+  TestModules() {
+  }
+  void Init() {
+    RegisterHttpHandler(new server::TestHandler());
+  }
+};
 _END_SERVER_NAMESPACE_
 
 int main(int argc, char **argv) {
   google::ParseCommandLineFlags(&argc, &argv, false);
-  server::Modules md;
-
-  server::TestHandler dh("test");
-  std::cout << "++++++" <<md.RegisterHttpHandler("/test",&dh);
-  md.Server();
+  (new server::TestModules())->Server();
   return 0;
 
 }

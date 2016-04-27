@@ -1,6 +1,4 @@
-/***************************************************************************
- * 
- * Copyright (c) 2016 evelio, Inc. All Rights Reserved
+/* Copyright (c) 2016 evelio, Inc. All Rights Reserved
  *
  * *************************************************************************/
 
@@ -20,8 +18,8 @@ _START_SERVER_NAMESPACE_
 
 _START_CSTR_NAMESPACE_
 
-inline const char *dumpRequest() {
-  return "dump";
+inline const char *testRequest() {
+  return "test";
 }
   
 _END_CSTR_NAMESPACE_

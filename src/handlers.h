@@ -32,6 +32,7 @@ class Handler {
   Handler(string regpath);
   virtual ~Handler();
   virtual string GetClassName();
+  virtual string GetPathName() = 0;
   virtual bool HttpHandler(Request* request, Response* response) = 0;
 
  protected:
@@ -46,6 +47,7 @@ class DefaultHandler : public Handler {
   DefaultHandler(string regpath);
   virtual ~DefaultHandler();
   virtual string GetClassName();
+  virtual string GetPathName();
   virtual bool Excute(Request* request, Response* response, const In &in) = 0;
   //  Call callback function, then send back response.
   virtual bool HttpHandler(Request* request, Response* response);
@@ -59,6 +61,7 @@ class JsonHandler : public Handler {
   JsonHandler(string regpath);
   virtual ~JsonHandler();
   virtual string GetClassName();
+  virtual string GetPathName();
   virtual bool Excute(Request* request, Response* response, const In &in) = 0;
   //  Call callback function, then send back response.
   virtual bool HttpHandler(Request* request, Response* response);
@@ -72,6 +75,7 @@ class BinaryHandler : public Handler {
   BinaryHandler(string regpath);
   virtual ~BinaryHandler();
   virtual string GetClassName();
+  virtual string GetPathName();
   virtual bool Excute(Request* request, Response* response, const  In &in) = 0;
   //  Call callback function, then send back response.
   virtual bool HttpHandler(Request* request, Response* response);
