@@ -32,16 +32,24 @@
 
 
 _START_SERVER_NAMESPACE_
+
+/*
+ * Extract paras from args
+ */
+static void ExtractString(const In& args, const string& name, std::string &value) {
+  map<string, string>::const_iterator it = args.find(name);
+  if (it != args.end()){
+       value = it->second;
+  }
+}
+
 class TestHandler : public DefaultHandler {
  public:
   TestHandler():DefaultHandler(cstr::testRequest()){}
   bool Excute(Request* request, Response* response, const In &in) {
-    //string query = request->ExtractParam("query");
-    //cout << "-----" << query<< "---------"<<endl;
-    map<string, string>::const_iterator it = in.find("query");
-    if (it != in.end()){
-      response->AppendBuffer(it->second);
-    }
+    string query;
+    ExtractString(in, "query", query);
+    response->AppendBuffer(query);
     return true;
   }
 };
