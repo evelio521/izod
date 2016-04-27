@@ -35,7 +35,7 @@ cc_library(
         '//base:base',
         '//thirdlibs/event:event',
     ],
-    hdrs = glob(['response.h']),
+    hdrs = glob(['*.h']),
 )
 cc_library(
     name = 'request',
@@ -47,7 +47,7 @@ cc_library(
         ':util',
         '//thirdlibs/event:event',
     ],
-    hdrs = glob(['request.h']),
+    hdrs = glob(['*.h']),
 )
 cc_library(
     name = 'handlers',
@@ -61,7 +61,7 @@ cc_library(
         '//base:base',
         '//thirdlibs/event:event',
     ],
-    hdrs = glob(['handlers.h']),
+    hdrs = glob(['*.h']),
 )
 cc_library(
     name = 'modules',
@@ -78,14 +78,5 @@ cc_library(
         '//base:thread_pool',
         '//thirdlibs/event:event',
     ],
-    hdrs = glob(['modules.h']),
-)
-cc_binary(
-    name = 'server_main',
-    srcs = ['server_main.cc'],
-    deps = [':modules',
-            ':handlers',
-            '//base:base',
-            '//thirdlibs/event:event',
-            ],
+    hdrs = glob(['*.h']),
 )

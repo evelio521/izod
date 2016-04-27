@@ -54,8 +54,9 @@ class Modules {
   Modules();
   virtual ~Modules();
 
-  bool RegisterHttpHandler(const string& path, Handler* handler);
+  bool RegisterHttpHandler(Handler* handler);
   void Server();
+  virtual void Init() = 0;
 
   const string& uri_root() const {
     return uri_root_;
@@ -64,7 +65,6 @@ class Modules {
   int BindSocket();
   void ShowBindInfo(int listen_fd);
   void Run(int listen_fd);
-
   int listen_port_;
   string uri_root_;
   base::hash_map<string, HandlerWrapper*> handlers_;

@@ -23,6 +23,8 @@
 #include <unistd.h>
 #include <string>
 
+//#include <sys/syscall.h>
+
 #include "base/log.h"
 #include "base/string_util.h"
 #include "src/util.h"
@@ -50,11 +52,17 @@ DefaultHandler::DefaultHandler(string regpath)
 DefaultHandler::~DefaultHandler() {
 }
 
+string DefaultHandler::GetPathName() {
+  return path;
+}
+
 bool DefaultHandler::HttpHandler(Request* request,
                              Response* response) {
   request->Dump();
   //response->AppendBuffer("No Service!");
-  if (Excute(request, response)) {
+  In in;
+  request->GetQueryParams(&in);
+  if (Excute(request, response, in)) {
     return response->SendToClient();
   }
   return false;
@@ -71,14 +79,22 @@ JsonHandler::JsonHandler(string regpath)
 JsonHandler::~JsonHandler() {
 }
 
+string JsonHandler::GetPathName() {
+  return path;
+}
+
 bool JsonHandler::HttpHandler(Request* request,
                              Response* response) {
   request->Dump();
   response->SetJsonContentType();
-  if (Excute(request, response)) {
+  //cout << "thread id " <<syscall(__NR_gettid)<< "\n";
+  In in;
+  request->GetQueryParams(&in);
+  if (Excute(request, response, in)) {
     return response->SendToClient();
   }
   response->AppendBuffer("{\"error\":\"bad json\"}");
+
   return false;
 }
 
@@ -93,12 +109,17 @@ BinaryHandler::BinaryHandler(string regpath)
 BinaryHandler::~BinaryHandler() {
 }
 
+string BinaryHandler::GetPathName() {
+  return path;
+}
+
 bool BinaryHandler::HttpHandler(Request* request,
                              Response* response) {
   request->Dump();
   response->SetBinaryContentType();
-
-  if (Excute(request, response)) {
+  In in;
+  request->GetQueryParams(&in);
+  if (Excute(request, response, in)) {
     return response->SendToClient();
   }
   string str = "bad buffer";

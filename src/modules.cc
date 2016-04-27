@@ -198,10 +198,10 @@ static void InnerHandlerCallback(struct evhttp_request* request, void* cb) {
   pool->Add(std::bind(ThreadTask, request, wrapper->handler));
 }
 
-bool Modules::RegisterHttpHandler(const string& path, Handler* handler) {
-  auto it = handlers_.find(path);
+bool Modules::RegisterHttpHandler( Handler* handler) {
+  auto it = handlers_.find(handler->GetPathName());
   if (it != handlers_.end()) {
-    LOG(ERROR)<< "Handler for path :" << path
+    LOG(ERROR)<< "Handler for path :" << handler->GetPathName()
     << " exist, fail to register new handler for it";
     return false;
   }
@@ -209,7 +209,7 @@ bool Modules::RegisterHttpHandler(const string& path, Handler* handler) {
   HandlerWrapper* wrapper = new HandlerWrapper;
   wrapper->handler = handler;
   wrapper->pool = thread_pool_.get();
-  handlers_.insert(make_pair(path, wrapper));
+  handlers_.insert(make_pair(handler->GetPathName(), wrapper));
   return true;
 }
 
@@ -264,6 +264,7 @@ void Modules::Server() {
   // Equal to signal(SIGPIPE, SIG_IGN);
   // When client is closed unexpectedly, write bufferevent_writecb in libevent
   // will arise SIGPIPE signal.
+  Init();
   signal(SIGPIPE, IgnoreSignal);
 
   int listen_fd = BindSocket();
