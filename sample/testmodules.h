@@ -28,6 +28,7 @@ class TestModules : public Modules {
   TestModules() {
   }
   void Init();
+  static TestModules* Instance();
 };
 _END_SERVER_NAMESPACE_
 

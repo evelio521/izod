@@ -21,10 +21,19 @@
 
 _START_SERVER_NAMESPACE_
 
+_START_NAMESPACE_
+
+TestModules *g_module = NULL;
+
+_END_NAMESPACE_
+
 void TestModules::Init() {
   RegisterHttpHandler(new server::TestBinaryHandler());
   RegisterHttpHandler(new server::TestDefaultHandler());
   RegisterHttpHandler(new server::TestJsonHandler());
+}
+static TestModules* TestModules::Instance() {
+  return g_module;
 }
 
 _END_SERVER_NAMESPACE_
