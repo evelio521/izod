@@ -23,6 +23,8 @@
 #include <unistd.h>
 #include <string>
 
+//#include <sys/syscall.h>
+
 #include "base/log.h"
 #include "base/string_util.h"
 #include "src/util.h"
@@ -85,6 +87,7 @@ bool JsonHandler::HttpHandler(Request* request,
                              Response* response) {
   request->Dump();
   response->SetJsonContentType();
+  //cout << "thread id " <<syscall(__NR_gettid)<< "\n";
   In in;
   request->GetQueryParams(&in);
   if (Excute(request, response, in)) {

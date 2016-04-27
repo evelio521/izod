@@ -65,7 +65,6 @@ class Modules {
   int BindSocket();
   void ShowBindInfo(int listen_fd);
   void Run(int listen_fd);
-
   int listen_port_;
   string uri_root_;
   base::hash_map<string, HandlerWrapper*> handlers_;
