@@ -61,7 +61,17 @@ bool DefaultHandler::HttpHandler(Request* request,
   request->Dump();
   //response->AppendBuffer("No Service!");
   In in;
-  request->GetQueryParams(&in);
+
+  if (request->GetRequestMethod() == EVHTTP_REQ_GET) {
+    request->GetQueryParams(&in);
+  } else if (request->GetRequestMethod() == EVHTTP_REQ_POST) {
+    request->GetPostParams(&in);
+  } else {
+    LOG(FATAL)<< "Only support Get or Post method";
+    return false;
+  }
+
+  // request->GetQueryParams(&in);
   if (Excute(request, response, in)) {
     return response->SendToClient();
   }
@@ -89,12 +99,20 @@ bool JsonHandler::HttpHandler(Request* request,
   response->SetJsonContentType();
   //cout << "thread id " <<syscall(__NR_gettid)<< "\n";
   In in;
-  request->GetQueryParams(&in);
+  if (request->GetRequestMethod() == EVHTTP_REQ_GET) {
+    request->GetQueryParams(&in);
+  } else if (request->GetRequestMethod() == EVHTTP_REQ_POST) {
+    request->GetPostParams(&in);
+  } else {
+    LOG(INFO) << "Only support Get or Post method";
+    return false;
+  }
+  // request->GetQueryParams(&in);
   if (Excute(request, response, in)) {
     return response->SendToClient();
   }
-  response->AppendBuffer("{\"error\":\"bad json\"}");
 
+  response->AppendBuffer("{\"error\":\"bad json\"}");
   return false;
 }
 
@@ -118,7 +136,17 @@ bool BinaryHandler::HttpHandler(Request* request,
   request->Dump();
   response->SetBinaryContentType();
   In in;
-  request->GetQueryParams(&in);
+
+  if (request->GetRequestMethod() == EVHTTP_REQ_GET) {
+    request->GetQueryParams(&in);
+  } else if (request->GetRequestMethod() == EVHTTP_REQ_POST) {
+    request->GetPostParams(&in);
+  } else {
+    LOG(FATAL)<< "Only support Get or Post method";
+    return false;
+  }
+
+  // request->GetQueryParams(&in);
   if (Excute(request, response, in)) {
     return response->SendToClient();
   }
