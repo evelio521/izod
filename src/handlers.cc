@@ -67,7 +67,7 @@ bool DefaultHandler::HttpHandler(Request* request,
   } else if (request->GetRequestMethod() == EVHTTP_REQ_POST) {
     request->GetPostParams(&in);
   } else {
-    LOG(FATAL)<< "Only support Get or Post method";
+    LOG(INFO)<< "Only support Get or Post method";
     return false;
   }
 
@@ -142,7 +142,7 @@ bool BinaryHandler::HttpHandler(Request* request,
   } else if (request->GetRequestMethod() == EVHTTP_REQ_POST) {
     request->GetPostParams(&in);
   } else {
-    LOG(FATAL)<< "Only support Get or Post method";
+    LOG(INFO)<< "Only support Get or Post method";
     return false;
   }
 
