@@ -107,8 +107,20 @@ bool JsonHandler::HttpHandler(Request* request,
     LOG(INFO) << "Only support Get or Post method";
     return false;
   }
+  bool jsonp = false;
+  if (in.find("fn") != in.end()
+      && in["fn"] == "jsonp"
+      && in.find("callback") != in.end()
+      &&  !in["callback"].empty()) {
+    string fb = in["callback"] + "(";
+    response->AppendBuffer(fb);
+    jsonp = true;
+  }
   // request->GetQueryParams(&in);
   if (Excute(request, response, in)) {
+    if (jsonp) {
+      response->AppendBuffer(")");
+    }
     return response->SendToClient();
   }
 
