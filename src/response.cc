@@ -43,6 +43,13 @@ void Response::SetJsonContentType() {
   AppendHeader("Content-Type", "application/json; charset=UTF-8");
 }
 
+/*
+ * Please look up base/mime.types
+ */
+void Response::SetReturnType(string header, string content) {
+  AppendHeader(header, content);
+}
+
 void Response::SetHtmlContentType() {
   AppendHeader("Content-Type", "text/html; charset=utf-8");
 }

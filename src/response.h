@@ -30,9 +30,11 @@ class Response {
 
   void AppendHeader(const string& key, const string& value);
   // helper function to set "Content-Type" to html/json/binary...
+  // you should add fn&callback params if you wanna return jsonp
   void SetJsonContentType();
   void SetHtmlContentType();
   void SetBinaryContentType();
+  void SetReturnType(string header, string content);
 
   void AppendBuffer(const string& buff);
   void SetResponseCode(int code);
