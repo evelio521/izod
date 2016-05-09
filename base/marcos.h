@@ -16,6 +16,12 @@
 
 #include "compat.h"
 
+/* Stops putting the code inside the Client namespace */
+#define _END_CLIENT_NAMESPACE_ }
+
+/* Puts following code inside the SERVER namespace */
+#define _START_CLIENT_NAMESPACE_ namespace client {
+
 /* Stops putting the code inside the SERVER namespace */
 #define _END_SERVER_NAMESPACE_ }
 
