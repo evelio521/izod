@@ -61,6 +61,19 @@ struct http_request_post {
     char *post_data;
 };
 
+struct Buffer {
+  explicit Buffer(size_t max_buf)
+    : is_full(false), max_size(max_buf) {}
+  void Reset() {
+    is_full = false;
+    data.clear();
+  }
+
+  bool is_full;
+  size_t max_size;
+  string data;
+};
+
 /************************** Tools Function ******************************/
 void Client::print_request_head_info(struct evkeyvalq *header) {
   struct evkeyval *first_node = header->tqh_first;
@@ -288,38 +301,6 @@ void* Client::start_http_requset(struct event_base* base,
 }
 
 
-
-
-struct Buffer {
-  explicit Buffer(size_t max_buf)
-    : is_full(false), max_size(max_buf) {}
-  void Reset() {
-    is_full = false;
-    data.clear();
-  }
-
-  bool is_full;
-  size_t max_size;
-  string data;
-};
-
-//static size_t WriteMemoryCallback(void *contents,
-//                                  size_t size,
-//                                  size_t nmemb,
-//                                  void *userp) {
-//  Buffer *mem = reinterpret_cast<Buffer*>(userp);
-//  if (mem->is_full) {
-//    return 0;
-//  }
-//
-//  size_t realsize = size * nmemb;
-//  mem->data.append(reinterpret_cast<const char*>(contents), realsize);
-//  if (mem->data.size() > mem->max_size) {
-//    mem->data.resize(mem->max_size);
-//    mem->is_full = true;
-//  }
-//  return realsize;
-//}
 
 Client::Client()
     : response_code_(0) {
