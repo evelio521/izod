@@ -133,7 +133,6 @@ static int start_url_request(struct http_request_get *http_req,
     evhttp_add_header(http_req_post->req->output_headers, "Content-Type",
                       http_req_post->content_type);
   } else if (req_get_flag == EVHTTP_REQ_GET) {
-    LOG(INFO) <<"55555555555555555";
     const char *query = evhttp_uri_get_query(http_req->uri);
     const char *path = evhttp_uri_get_path(http_req->uri);
     size_t len = (query ? strlen(query) : 0) + (path ? strlen(path) : 0) + 1;
@@ -148,14 +147,11 @@ static int start_url_request(struct http_request_get *http_req,
   /** Set the header properties */
   evhttp_add_header(http_req->req->output_headers, "Host",
                     evhttp_uri_get_host(http_req->uri));
-  LOG(INFO) << "8888888888888888888";
   return 0;
 }
 
 /************************** Request Function ******************************/
 static void http_requset_post_cb(struct evhttp_request *req, void *arg) {
-  LOG(INFO) << "PPPPPPPPPPPPPPPPPPPPPPP";
-  printf("++++++++++++++++++++++\n");
   struct http_request_post *http_req_post = (struct http_request_post *) arg;
   switch (req->response_code) {
     case HTTP_OK: {
@@ -195,7 +191,6 @@ static void http_requset_post_cb(struct evhttp_request *req, void *arg) {
   }
 }
 static void http_requset_get_cb(struct evhttp_request *req, void *arg) {
-  LOG(INFO) << "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG";
   struct http_request_get *http_req_get = (struct http_request_get *) arg;
   switch (req->response_code) {
     case HTTP_OK: {
@@ -304,35 +299,30 @@ bool Client::start_http_requset(struct event_base* base,
                                 int req_get_flag,
                                 const char *content_type,
                                 const char* data) {
-  struct http_request_get *http_req_get = (struct http_request_get*)http_request_new(base, url,
+  http_req_get = (struct http_request_get*)http_request_new(base, url,
                                                            req_get_flag,
                                                            content_type, data);
-  LOG(INFO) << "+++++" << req_get_flag;
-  LOG(INFO) << "start_http_requset:" << start_url_request(http_req_get, req_get_flag);
+  LOG(INFO) << "req_get_flag: " << req_get_flag;
+  LOG(INFO) << "start_http_requset: " << start_url_request(http_req_get, req_get_flag);
   LOG(INFO) << "bufsize: " << http_req_get->req->body_size;
   LOG(INFO) << "response_code_: " << http_req_get->req->response_code;
-//  body_write_buffer_.clear();
-//  body_write_buffer_.append(string(http_req_get->req->output_buffer));
-//  head_write_buffer_.clear();
-//  body_write_buffer_.append(string(http_req_get->req->output_headers));
   response_code_ = http_req_get->req->response_code;
-  http_request_free(http_req_get, req_get_flag);
+  //http_request_free(http_req_get, req_get_flag);
   return true;
 }
 
 
 
 Client::Client()
-    : response_code_(0) {
-//  head_write_buffer_.reset(new Buffer(FLAGS_max_head_buffer_size));
-//  body_write_buffer_.reset(new Buffer(FLAGS_max_body_buffer_size));
-
+    : response_code_(0),
+      http_req_post(NULL),
+      http_req_get(NULL){
   Reset();
 }
 
-//void Client::SetHttpMethod(HttpMethod type) {
-//  method_ = type;
-//}
+void Client::SetHttpMethod(evhttp_cmd_type type) {
+  method_ = type;
+}
 
 int Client::GetResponseCode() const {
   return response_code_;
@@ -355,7 +345,15 @@ void Client::SetPostData(const string& data) {
   post_data_ = data;
 }
 
-Client::~Client() {}
+Client::~Client() {
+  if (http_req_post != NULL) {
+    http_request_free((struct http_request_get *)http_req_post, EVHTTP_REQ_POST);
+  }
+
+  if (http_req_get != NULL) {
+    http_request_free(http_req_get, EVHTTP_REQ_GET);
+  }
+}
 
 const string& Client::ResponseHeader() const {
   return head_write_buffer_;
@@ -397,10 +395,12 @@ bool Client::IsBodyTooLarge() const {
 void Client::Reset() {
   response_code_ = 0;
   post_data_.clear();
+  method_ = EVHTTP_REQ_GET;
 }
 
 bool Client::FetchPostUrl(const string& url) {
   server::EventBaseLoop event_loop;
+  SetHttpMethod(EVHTTP_REQ_POST);
   start_http_requset(event_loop.base(), url.c_str(),
     EVHTTP_REQ_POST,HTTP_CONTENT_TYPE_URL_ENCODED, post_data_.c_str());
   event_loop.Dispatch();
@@ -410,6 +410,7 @@ bool Client::FetchPostUrl(const string& url) {
 
 bool Client::FetchGetUrl(const string& url) {
   server::EventBaseLoop event_loop;
+  SetHttpMethod(EVHTTP_REQ_GET);
   start_http_requset(event_loop.base(), url.c_str(),
          EVHTTP_REQ_GET, NULL, NULL);
   event_loop.Dispatch();

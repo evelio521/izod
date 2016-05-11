@@ -50,7 +50,7 @@ class Client {
   ~Client();
 
   // Call these functions after Reset().
-  // void SetHttpMethod(HttpMethod type);
+  void SetHttpMethod(evhttp_cmd_type type);
   // Join map to format like "k1=v1&k2=v2"
   void SetPostParams(const map<string, string>& m);
   void SetPostData(const string& data);
@@ -103,6 +103,9 @@ class Client {
   string  head_write_buffer_;
   string  body_write_buffer_;
   string post_data_;
+  evhttp_cmd_type method_;
+  http_request_get *http_req_get;
+  http_request_post *http_req_post;
   DISALLOW_COPY_AND_ASSIGN(Client);
 };
 _END_CLIENT_NAMESPACE_  // namespace client
