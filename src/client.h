@@ -49,8 +49,8 @@ class Client {
   Client();
   ~Client();
 
-  //  Call these functions after Reset().
-//  void SetHttpMethod(HttpMethod type);
+  // Call these functions after Reset().
+  // void SetHttpMethod(HttpMethod type);
   // Join map to format like "k1=v1&k2=v2"
   void SetPostParams(const map<string, string>& m);
   void SetPostData(const string& data);
@@ -102,9 +102,7 @@ class Client {
   int response_code_;  // NOLINT
   string  head_write_buffer_;
   string  body_write_buffer_;
-//  HttpMethod method_;
   string post_data_;
-  //server::EventBaseLoop event_loop;
   DISALLOW_COPY_AND_ASSIGN(Client);
 };
 _END_CLIENT_NAMESPACE_  // namespace client
