@@ -80,3 +80,16 @@ cc_library(
     ],
     hdrs = glob(['*.h']),
 )
+
+cc_library(
+    name = 'client',
+    srcs = [
+        'client.cc',
+    ],
+    deps = [
+        ':event_base_loop',
+        '//base:base',
+        '//thirdlibs/event:event',
+    ],
+    hdrs = glob(['*.h']),
+)
