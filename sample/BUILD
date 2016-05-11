@@ -46,3 +46,14 @@ cc_binary(
         ':testmodule',
     ],
 )
+
+cc_binary(
+    name = 'client_main',
+    srcs = [
+        'client_main.cc',
+    ],
+    deps = [
+        ':def',
+        '//src:client',
+    ],
+)

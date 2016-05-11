@@ -97,8 +97,10 @@ static void print_uri_parts_info(const struct evhttp_uri * http_uri) {
 
 static int start_url_request(struct http_request_get *http_req,
                               int req_get_flag) {
-  if (http_req->cn)
+  if (http_req->cn) {
+    LOG(INFO) << "evhttp_connection_free";
     evhttp_connection_free(http_req->cn);
+  }
 
   int port = evhttp_uri_get_port(http_req->uri);
   http_req->cn = evhttp_connection_base_new(http_req->base,
@@ -111,8 +113,10 @@ static int start_url_request(struct http_request_get *http_req,
    * See info of evhttp_make_request()
    */
   if (req_get_flag == EVHTTP_REQ_POST) {
+    LOG(INFO) << "POST";
     http_req->req = evhttp_request_new(http_requset_post_cb, http_req);
   } else if (req_get_flag == EVHTTP_REQ_GET) {
+    LOG(INFO) << "GET";
     http_req->req = evhttp_request_new(http_requset_get_cb, http_req);
   }
 
@@ -129,6 +133,7 @@ static int start_url_request(struct http_request_get *http_req,
     evhttp_add_header(http_req_post->req->output_headers, "Content-Type",
                       http_req_post->content_type);
   } else if (req_get_flag == EVHTTP_REQ_GET) {
+    LOG(INFO) <<"55555555555555555";
     const char *query = evhttp_uri_get_query(http_req->uri);
     const char *path = evhttp_uri_get_path(http_req->uri);
     size_t len = (query ? strlen(query) : 0) + (path ? strlen(path) : 0) + 1;
@@ -143,12 +148,14 @@ static int start_url_request(struct http_request_get *http_req,
   /** Set the header properties */
   evhttp_add_header(http_req->req->output_headers, "Host",
                     evhttp_uri_get_host(http_req->uri));
-
+  LOG(INFO) << "8888888888888888888";
   return 0;
 }
 
 /************************** Request Function ******************************/
 static void http_requset_post_cb(struct evhttp_request *req, void *arg) {
+  LOG(INFO) << "PPPPPPPPPPPPPPPPPPPPPPP";
+  printf("++++++++++++++++++++++\n");
   struct http_request_post *http_req_post = (struct http_request_post *) arg;
   switch (req->response_code) {
     case HTTP_OK: {
@@ -188,6 +195,7 @@ static void http_requset_post_cb(struct evhttp_request *req, void *arg) {
   }
 }
 static void http_requset_get_cb(struct evhttp_request *req, void *arg) {
+  LOG(INFO) << "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG";
   struct http_request_get *http_req_get = (struct http_request_get *) arg;
   switch (req->response_code) {
     case HTTP_OK: {
@@ -299,7 +307,10 @@ bool Client::start_http_requset(struct event_base* base,
   struct http_request_get *http_req_get = (struct http_request_get*)http_request_new(base, url,
                                                            req_get_flag,
                                                            content_type, data);
-  start_url_request(http_req_get, req_get_flag);
+  LOG(INFO) << "+++++" << req_get_flag;
+  LOG(INFO) << "start_http_requset:" << start_url_request(http_req_get, req_get_flag);
+  LOG(INFO) << "bufsize: " << http_req_get->req->body_size;
+  LOG(INFO) << "response_code_: " << http_req_get->req->response_code;
 //  body_write_buffer_.clear();
 //  body_write_buffer_.append(string(http_req_get->req->output_buffer));
 //  head_write_buffer_.clear();
