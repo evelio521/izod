@@ -143,6 +143,7 @@ static int start_url_request(struct http_request_get *http_req,
     }
     evhttp_make_request(http_req->cn, http_req->req, EVHTTP_REQ_GET,
                         path_query ? path_query : "/");
+    free(path_query);
   }
   /** Set the header properties */
   evhttp_add_header(http_req->req->output_headers, "Host",
@@ -348,10 +349,12 @@ void Client::SetPostData(const string& data) {
 Client::~Client() {
   if (http_req_post != NULL) {
     http_request_free((struct http_request_get *)http_req_post, EVHTTP_REQ_POST);
+    //free(http_req_post);
   }
 
   if (http_req_get != NULL) {
     http_request_free(http_req_get, EVHTTP_REQ_GET);
+    //free(http_req_get);
   }
 }
 
@@ -396,6 +399,16 @@ void Client::Reset() {
   response_code_ = 0;
   post_data_.clear();
   method_ = EVHTTP_REQ_GET;
+
+  if (http_req_post != NULL) {
+    http_request_free((struct http_request_get *)http_req_post, EVHTTP_REQ_POST);
+    //free(http_req_post);
+  }
+
+  if (http_req_get != NULL) {
+    http_request_free(http_req_get, EVHTTP_REQ_GET);
+    //free(http_req_get);
+  }
 }
 
 bool Client::FetchPostUrl(const string& url) {

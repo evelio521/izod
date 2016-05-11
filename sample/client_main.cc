@@ -21,7 +21,19 @@
 int main(int argc, char **argv) {
   google::ParseCommandLineFlags(&argc, &argv, false);
   client::Client cli;
-  cli.FetchGetUrl("http://open.mobvoi.com/v/1.0/q?query=%E4%B8%8A%E6%B5%B7%E5%A4%A9%E6%B0%94&apikey=mobvoiwebpage&source=debug");
+//  cli.FetchGetUrl("http://open.mobvoi.com/v/1.0/q?query=%E4%B8%8A%E6%B5%B7%E5%A4%A9%E6%B0%94&apikey=mobvoiwebpage&source=debug");
+//  cli.Reset();
+//  cli.FetchGetUrl("http://open.mobvoi.com/v/1.0/q?query=%E4%B8%8A%E6%B5%B7%E5%A4%A9%E6%B0%94&apikey=mobvoiwebpage&source=debug");
+//  cli.Reset();
+//  cli.FetchGetUrl("http://open.mobvoi.com/v/1.0/q?query=%E4%B8%8A%E6%B5%B7%E5%A4%A9%E6%B0%94&apikey=mobvoiwebpage&source=debug");
+//  cli.Reset();
+//  cli.FetchGetUrl("http://open.mobvoi.com/v/1.0/q?query=%E4%B8%8A%E6%B5%B7%E5%A4%A9%E6%B0%94&apikey=mobvoiwebpage&source=debug");
+//  cli.Reset();
+//  cli.FetchGetUrl("http://open.mobvoi.com/v/1.0/q?query=%E4%B8%8A%E6%B5%B7%E5%A4%A9%E6%B0%94&apikey=mobvoiwebpage&source=debug");
+//  cli.Reset();
+//  cli.FetchGetUrl("http://open.mobvoi.com/v/1.0/q?query=%E4%B8%8A%E6%B5%B7%E5%A4%A9%E6%B0%94&apikey=mobvoiwebpage&source=debug");
+//  cli.Reset();
+//  cli.FetchGetUrl("http://open.mobvoi.com/v/1.0/q?query=%E4%B8%8A%E6%B5%B7%E5%A4%A9%E6%B0%94&apikey=mobvoiwebpage&source=debug");
   return 0;
 }
 
