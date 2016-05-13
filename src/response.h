@@ -18,6 +18,8 @@
 
 #include "base/basictypes.h"
 #include "base/compat.h"
+#include "thirdlibs/gflags/gflags.h"
+#include "thirdlibs/glog/logging.h"
 
 _START_SERVER_NAMESPACE_
 

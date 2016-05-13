@@ -95,7 +95,7 @@ string JsonHandler::GetPathName() {
 
 bool JsonHandler::HttpHandler(Request* request,
                              Response* response) {
-  request->Dump();
+  //request->Dump();
   response->SetJsonContentType();
   //cout << "thread id " <<syscall(__NR_gettid)<< "\n";
   In in;
@@ -145,7 +145,7 @@ string BinaryHandler::GetPathName() {
 
 bool BinaryHandler::HttpHandler(Request* request,
                              Response* response) {
-  request->Dump();
+  //request->Dump();
   response->SetBinaryContentType();
   In in;
 

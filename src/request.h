@@ -20,6 +20,8 @@
 #include "base/basictypes.h"
 #include "base/compat.h"
 #include "thirdlibs/event/include/event2/http.h"
+#include "thirdlibs/gflags/gflags.h"
+#include "thirdlibs/glog/logging.h"
 
 struct evhttp_request;
 

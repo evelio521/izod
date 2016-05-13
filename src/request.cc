@@ -127,6 +127,7 @@ bool Request::GetPostParams(map<string, string>* params) const {
   if (postdata.empty()) {
     return false;
   }
+  LOG(INFO) << "post data：" << postdata;
   ParseUrlParams(postdata, params);
   return true;
 }
