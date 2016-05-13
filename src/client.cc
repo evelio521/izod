@@ -410,9 +410,24 @@ void Client::Reset() {
   }
 }
 
+//typedef struct {
+//        struct timeval tv;
+//        struct event * ev;
+//} timer_param_t;
+//
+//
+//static void timer_task(int fd, short events, void * ctx) {
+//        printf(".................................\n");
+//        return;
+//}
+
 bool Client::FetchPostUrl(const string& url) {
   server::EventBaseLoop event_loop;
   SetHttpMethod(EVHTTP_REQ_POST);
+//  timer_param_t * param = (timer_param_t*)calloc(1, sizeof(timer_param_t));
+//  param->ev = evtimer_new(event_loop.base(), timer_task, param);
+//  param->tv.tv_sec = 0.1;
+//  evtimer_add(param->ev, &param->tv);
   start_http_requset(event_loop.base(), url.c_str(),
     EVHTTP_REQ_POST,HTTP_CONTENT_TYPE_URL_ENCODED, post_data_.c_str());
   event_loop.Dispatch();
