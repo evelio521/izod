@@ -24,7 +24,6 @@ int main(int argc, char **argv) {
   cli.SetPostData("query=999999&qq=3&yy=4");
   cli.FetchPostUrl("http://127.0.0.1:8888/json");
   cli.Reset();
-
   cli.SetPostData("query=999999&qq=3&yy=4");
   cli.FetchPostUrl("http://127.0.0.1:8888/json");
 

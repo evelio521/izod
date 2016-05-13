@@ -147,6 +147,7 @@ static int start_url_request(struct http_request_get *http_req,
   /** Set the header properties */
   evhttp_add_header(http_req->req->output_headers, "Host",
                     evhttp_uri_get_host(http_req->uri));
+  evhttp_connection_set_timeout(http_req->cn, 3000);
   return 0;
 }
 
@@ -316,7 +317,9 @@ bool Client::start_http_requset(struct event_base* base,
 Client::Client()
     : response_code_(0),
       http_req_post(NULL),
-      http_req_get(NULL){
+      http_req_get(NULL),
+      time_(3000),
+      connection_time_(3000){
   Reset();
 }
 
@@ -372,11 +375,11 @@ const string& Client::ResponseBody() const {
 //}
 
 void Client::SetConnectTimeout(int time_ms) {
-//  curl_easy_setopt(curl_handle_, CURLOPT_CONNECTTIMEOUT_MS, time_ms);
+  connection_time_ = time_ms;
 }
 
-void Client::SetFetchTimeout(int time_ms) {
-//  curl_easy_setopt(curl_handle_, CURLOPT_TIMEOUT_MS, time_ms);
+void Client::SetFetchTimeout(int time_second) {
+  time_ = time_second;
 }
 
 //void Client::SetAuth(const string& user, const string& password) {
@@ -401,33 +404,20 @@ void Client::Reset() {
 
   if (http_req_post != NULL) {
     http_request_free((struct http_request_get *)http_req_post, EVHTTP_REQ_POST);
-    //free(http_req_post);
+    // free(http_req_post);
   }
 
   if (http_req_get != NULL) {
     http_request_free(http_req_get, EVHTTP_REQ_GET);
-    //free(http_req_get);
+    // free(http_req_get);
   }
 }
-
-//typedef struct {
-//        struct timeval tv;
-//        struct event * ev;
-//} timer_param_t;
-//
-//
-//static void timer_task(int fd, short events, void * ctx) {
-//        printf(".................................\n");
-//        return;
-//}
 
 bool Client::FetchPostUrl(const string& url) {
   server::EventBaseLoop event_loop;
   SetHttpMethod(EVHTTP_REQ_POST);
-//  timer_param_t * param = (timer_param_t*)calloc(1, sizeof(timer_param_t));
-//  param->ev = evtimer_new(event_loop.base(), timer_task, param);
-//  param->tv.tv_sec = 0.1;
-//  evtimer_add(param->ev, &param->tv);
+  struct timeval tv = {0,time_};
+  event_base_loopexit(event_loop.base(),&tv);
   start_http_requset(event_loop.base(), url.c_str(),
     EVHTTP_REQ_POST,HTTP_CONTENT_TYPE_URL_ENCODED, post_data_.c_str());
   event_loop.Dispatch();
@@ -438,6 +428,8 @@ bool Client::FetchPostUrl(const string& url) {
 bool Client::FetchGetUrl(const string& url) {
   server::EventBaseLoop event_loop;
   SetHttpMethod(EVHTTP_REQ_GET);
+  struct timeval tv = {0,time_};
+  event_base_loopexit(event_loop.base(),&tv);
   start_http_requset(event_loop.base(), url.c_str(),
          EVHTTP_REQ_GET, NULL, NULL);
   event_loop.Dispatch();

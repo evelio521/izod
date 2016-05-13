@@ -109,6 +109,8 @@ class Client {
   string post_data_;
   // Only support Get or Post Method
   evhttp_cmd_type method_;
+  int time_;
+  int connection_time_;
   struct http_request_get *http_req_get;
   struct http_request_post *http_req_post;
   DISALLOW_COPY_AND_ASSIGN(Client);
