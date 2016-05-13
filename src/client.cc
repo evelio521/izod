@@ -98,27 +98,26 @@ static void print_uri_parts_info(const struct evhttp_uri * http_uri) {
 static int start_url_request(struct http_request_get *http_req,
                               int req_get_flag) {
   if (http_req->cn) {
-    LOG(INFO) << "evhttp_connection_free";
+    LOG(INFO) << "evhttp connection free";
     evhttp_connection_free(http_req->cn);
   }
-
   int port = evhttp_uri_get_port(http_req->uri);
   http_req->cn = evhttp_connection_base_new(http_req->base,
-  NULL,
+                                            NULL,
                                             evhttp_uri_get_host(http_req->uri),
                                             (port == -1 ? 80 : port));
-
   /**
    * Request will be released by evhttp connection
    * See info of evhttp_make_request()
    */
   if (req_get_flag == EVHTTP_REQ_POST) {
-    LOG(INFO) << "POST";
+    LOG(INFO) << "POST Method";
     http_req->req = evhttp_request_new(http_requset_post_cb, http_req);
   } else if (req_get_flag == EVHTTP_REQ_GET) {
-    LOG(INFO) << "GET";
+    LOG(INFO) << "GET Method";
     http_req->req = evhttp_request_new(http_requset_get_cb, http_req);
   }
+
 
   if (req_get_flag == EVHTTP_REQ_POST) {
     const char *path = evhttp_uri_get_path(http_req->uri);

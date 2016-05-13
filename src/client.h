@@ -26,13 +26,14 @@
 #include "thirdlibs/event/include/event2/http.h"
 #include "thirdlibs/event/include/event2/http_struct.h"
 #include "thirdlibs/event/include/event2/keyvalq_struct.h"
+
 _START_CLIENT_NAMESPACE_
 
 class Buffer;
 struct http_request_get;
 struct http_request_post;
 
-//enum HttpMethod {
+//enum evhttp_cmd_type {
 //  EVHTTP_REQ_GET     = 1 << 0,
 //  EVHTTP_REQ_POST    = 1 << 1,
 //  EVHTTP_REQ_HEAD    = 1 << 2,
@@ -56,28 +57,31 @@ class Client {
   void SetPostData(const string& data);
 
   void Reset();
+  // For Http Get Method
   bool FetchGetUrl(const string& url);
+  // For Http Post Method
   bool FetchPostUrl(const string& url);
-
-  int response_code() const {
-    return response_code_;
-  }
-
+  // Return Header Data
   const string& ResponseHeader() const;
-
+  // Retuen Body Data
   const string& ResponseBody() const;
 
+  // Drop it temporarily
   bool IsHeaderTooLarge() const;
+  // Drop it temporarily
   bool IsBodyTooLarge() const;
-
+  // Return response code like 200 etc
   int GetResponseCode() const;
 
   // Sets header.
   void AddHeader(const string& key, const string& value);
-
+  // Drop it temporarily
   void SetConnectTimeout(int time_ms);
+  // Drop it temporarily
   void SetFetchTimeout(int time_ms);
+  // Drop it temporarily
   void SetAuth(const string& user, const string& password);
+  // Drop it temporarily
   void SetProxy(const string& proxy_host, int proxy_port);
 
  private:
@@ -103,9 +107,10 @@ class Client {
   string  head_write_buffer_;
   string  body_write_buffer_;
   string post_data_;
+  // Only support Get or Post Method
   evhttp_cmd_type method_;
-  http_request_get *http_req_get;
-  http_request_post *http_req_post;
+  struct http_request_get *http_req_get;
+  struct http_request_post *http_req_post;
   DISALLOW_COPY_AND_ASSIGN(Client);
 };
 _END_CLIENT_NAMESPACE_  // namespace client
