@@ -40,6 +40,8 @@ _START_CLIENT_NAMESPACE_
 #define HTTP_CONTENT_TYPE_FORM_DATA     "multipart/form-data"
 // (use for plain text)
 #define HTTP_CONTENT_TYPE_TEXT_PLAIN    "text/plain"
+// second request timeout
+#define MOVETEMP_TIMEOUT 2000
 
 
 struct http_request_get {
@@ -74,7 +76,7 @@ struct Buffer {
 /************************** Ahead Declare ******************************/
 static void http_requset_post_cb(struct evhttp_request *req, void *arg);
 static void http_requset_get_cb(struct evhttp_request *req, void *arg);
-static int start_url_request(struct http_request_get *http_req, int req_get_flag);
+static int start_url_request(struct http_request_get *http_req, int req_get_flag, int conn_time);
 
 /************************** Tools Function ******************************/
 static void print_request_head_info(struct evkeyvalq *header) {
@@ -96,7 +98,7 @@ static void print_uri_parts_info(const struct evhttp_uri * http_uri) {
 }
 
 static int start_url_request(struct http_request_get *http_req,
-                              int req_get_flag) {
+                              int req_get_flag,int conn_time) {
   if (http_req->cn) {
     LOG(INFO) << "evhttp connection free";
     evhttp_connection_free(http_req->cn);
@@ -147,7 +149,7 @@ static int start_url_request(struct http_request_get *http_req,
   /** Set the header properties */
   evhttp_add_header(http_req->req->output_headers, "Host",
                     evhttp_uri_get_host(http_req->uri));
-  evhttp_connection_set_timeout(http_req->cn, 3000);
+  evhttp_connection_set_timeout(http_req->cn, conn_time);
   return 0;
 }
 
@@ -182,7 +184,7 @@ static void http_requset_post_cb(struct evhttp_request *req, void *arg) {
       evhttp_uri_free(http_req_post->uri);
       http_req_post->uri = new_uri;
       start_url_request((struct http_request_get *) http_req_post,
-                        EVHTTP_REQ_POST);
+                        EVHTTP_REQ_POST, MOVETEMP_TIMEOUT);
       return;
     }
 
@@ -220,7 +222,7 @@ static void http_requset_get_cb(struct evhttp_request *req, void *arg) {
       struct evhttp_uri *new_uri = evhttp_uri_parse(new_location);
       evhttp_uri_free(http_req_get->uri);
       http_req_get->uri = new_uri;
-      start_url_request(http_req_get, EVHTTP_REQ_GET);
+      start_url_request(http_req_get, EVHTTP_REQ_GET, MOVETEMP_TIMEOUT);
       return;
     }
 
@@ -304,7 +306,7 @@ bool Client::start_http_requset(struct event_base* base,
                                                            req_get_flag,
                                                            content_type, data);
   LOG(INFO) << "req_get_flag: " << req_get_flag;
-  LOG(INFO) << "start_http_requset: " << start_url_request(http_req_get, req_get_flag);
+  LOG(INFO) << "start_http_requset: " << start_url_request(http_req_get, req_get_flag, connection_time_);
   LOG(INFO) << "bufsize: " << http_req_get->req->body_size;
   LOG(INFO) << "response_code_: " << http_req_get->req->response_code;
   response_code_ = http_req_get->req->response_code;
