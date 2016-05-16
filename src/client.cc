@@ -366,33 +366,7 @@ Client::~Client() {
 }
 
 const string& Client::ResponseHeader() const {
-  if (method_ == EVHTTP_REQ_POST) {
-    struct evbuffer* buf = evhttp_request_get_input_buffer(http_req_post->req);
-    size_t len = evbuffer_get_length(buf);
-    LOG(INFO)<< "print the head info:";
-    //print_request_head_info(req->output_headers);
-    LOG(INFO)<< "len :" << len << " body size" << http_req_post->req->body_size;
-    char* tmp = (char*) malloc(len + 1);
-    memcpy(tmp, evbuffer_pullup(buf, -1), len);
-    tmp[len] = '\0';
-    LOG(INFO)<<"print the body:";
-    LOG(INFO)<< "HTML BODY:" << tmp;
-    free(tmp);
-  } else if (method_ == EVHTTP_REQ_GET){
-    struct evbuffer* buf = evhttp_request_get_input_buffer(http_req_get->req);
-    size_t len = evbuffer_get_length(buf);
-    LOG(INFO)<< "print the head info:";
-    //print_request_head_info(req->output_headers);
-
-    LOG(INFO)<< "len :" << len << " body size" << http_req_get->req->body_size;
-    char *tmp = (char *) malloc(len + 1);
-    memcpy(tmp, evbuffer_pullup(buf, -1), len);
-    tmp[len] = '\0';
-    LOG(INFO)<<"print the body:";
-    LOG(INFO)<< "HTML BODY:" << tmp;
-    free(tmp);
-  }
-  return head_write_buffer_;
+   return head_write_buffer_;
 }
 
 const string& Client::ResponseBody() const {

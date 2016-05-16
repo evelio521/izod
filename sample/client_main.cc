@@ -21,11 +21,14 @@
 int main(int argc, char **argv) {
   google::ParseCommandLineFlags(&argc, &argv, false);
   client::Client cli;
-  cli.SetPostData("query=999999&qq=3&yy=4");
-  cli.FetchPostUrl("http://127.0.0.1:8888/json");
-  cli.Reset();
-  cli.SetPostData("query=999999&qq=3&yy=4");
-  cli.FetchPostUrl("http://127.0.0.1:8888/json");
+//  cli.SetPostData("query=999999&qq=3&yy=4");
+  cli.FetchGetUrl("http://127.0.0.1:8888/json?query=999999&qq=3&yy=4");
+  cout << "++++++++++++++++++++++++++++++++" << endl;
+  //cli.ResponseHeader();
+  //cli.Reset();
+  cout << "++++++++++++++++++++++++++++++++" << endl;
+//  cli.SetPostData("query=999999&qq=3&yy=4");
+//  cli.FetchPostUrl("http://127.0.0.1:8888/json");
 
   return 0;
 }
