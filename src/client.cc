@@ -76,7 +76,9 @@ struct Buffer {
 /************************** Ahead Declare ******************************/
 static void http_requset_post_cb(struct evhttp_request *req, void *arg);
 static void http_requset_get_cb(struct evhttp_request *req, void *arg);
-static int start_url_request(struct http_request_get *http_req, int req_get_flag, int conn_time);
+static int start_url_request(struct http_request_get *http_req,
+                             int req_get_flag,
+                             int conn_time);
 
 /************************** Tools Function ******************************/
 static void print_request_head_info(struct evkeyvalq *header) {
@@ -98,7 +100,8 @@ static void print_uri_parts_info(const struct evhttp_uri * http_uri) {
 }
 
 static int start_url_request(struct http_request_get *http_req,
-                              int req_get_flag,int conn_time) {
+                              int req_get_flag,
+                              int conn_time) {
   if (http_req->cn) {
     LOG(INFO) << "evhttp connection free";
     evhttp_connection_free(http_req->cn);
@@ -363,6 +366,32 @@ Client::~Client() {
 }
 
 const string& Client::ResponseHeader() const {
+  if (method_ == EVHTTP_REQ_POST) {
+    struct evbuffer* buf = evhttp_request_get_input_buffer(http_req_post->req);
+    size_t len = evbuffer_get_length(buf);
+    LOG(INFO)<< "print the head info:";
+    //print_request_head_info(req->output_headers);
+    LOG(INFO)<< "len :" << len << " body size" << http_req_post->req->body_size;
+    char* tmp = (char*) malloc(len + 1);
+    memcpy(tmp, evbuffer_pullup(buf, -1), len);
+    tmp[len] = '\0';
+    LOG(INFO)<<"print the body:";
+    LOG(INFO)<< "HTML BODY:" << tmp;
+    free(tmp);
+  } else if (method_ == EVHTTP_REQ_GET){
+    struct evbuffer* buf = evhttp_request_get_input_buffer(http_req_get->req);
+    size_t len = evbuffer_get_length(buf);
+    LOG(INFO)<< "print the head info:";
+    //print_request_head_info(req->output_headers);
+
+    LOG(INFO)<< "len :" << len << " body size" << http_req_get->req->body_size;
+    char *tmp = (char *) malloc(len + 1);
+    memcpy(tmp, evbuffer_pullup(buf, -1), len);
+    tmp[len] = '\0';
+    LOG(INFO)<<"print the body:";
+    LOG(INFO)<< "HTML BODY:" << tmp;
+    free(tmp);
+  }
   return head_write_buffer_;
 }
 

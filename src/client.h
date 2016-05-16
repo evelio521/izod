@@ -85,11 +85,15 @@ class Client {
   void SetProxy(const string& proxy_host, int proxy_port);
 
  private:
+
 //  void print_request_head_info(struct evkeyvalq *header);
 //  void print_uri_parts_info(const struct evhttp_uri * http_uri);
 //  void http_requset_post_cb(struct evhttp_request *req, void *arg);
 //  void http_requset_get_cb(struct evhttp_request *req, void *arg);
-//  int start_url_request(struct http_request_get *http_req, int req_get_flag);
+//  int  start_url_request(struct http_request_get *http_req,
+//                         int req_get_flag,
+//                         int conn_time);
+
   void *http_request_new(struct event_base* base,
                          const char *url,
                          int req_get_flag,
