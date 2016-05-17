@@ -74,14 +74,14 @@ struct Buffer {
 };
 
 /************************** Ahead Declare ******************************/
-static void http_requset_post_cb(struct evhttp_request *req, void *arg);
-static void http_requset_get_cb(struct evhttp_request *req, void *arg);
-static int start_url_request(struct http_request_get *http_req,
-                             int req_get_flag,
-                             int conn_time);
+//static void http_requset_post_cb(struct evhttp_request *req, void *arg);
+//static void http_requset_get_cb(struct evhttp_request *req, void *arg);
+//static int start_url_request(struct http_request_get *http_req,
+//                             int req_get_flag,
+//                             int conn_time);
 
 /************************** Tools Function ******************************/
-static void print_request_head_info(struct evkeyvalq *header) {
+void Client::print_request_head_info(struct evkeyvalq *header) {
   struct evkeyval *first_node = header->tqh_first;
   while (first_node) {
     LOG(INFO) << "key:" << first_node->key <<" value:" << first_node->value;
@@ -89,7 +89,7 @@ static void print_request_head_info(struct evkeyvalq *header) {
   }
 }
 
-static void print_uri_parts_info(const struct evhttp_uri * http_uri) {
+void Client::print_uri_parts_info(const struct evhttp_uri * http_uri) {
   LOG(INFO) << "scheme:" << evhttp_uri_get_scheme(http_uri);
   LOG(INFO) << "host:" << evhttp_uri_get_host(http_uri);
   LOG(INFO) << "path:" << evhttp_uri_get_path(http_uri);
@@ -99,7 +99,7 @@ static void print_uri_parts_info(const struct evhttp_uri * http_uri) {
   LOG(INFO) << "fragment:" << evhttp_uri_get_fragment(http_uri);
 }
 
-static int start_url_request(struct http_request_get *http_req,
+int Client::start_url_request(struct http_request_get *http_req,
                               int req_get_flag,
                               int conn_time) {
   if (http_req->cn) {
@@ -157,7 +157,7 @@ static int start_url_request(struct http_request_get *http_req,
 }
 
 /************************** Request Function ******************************/
-static void http_requset_post_cb(struct evhttp_request *req, void *arg) {
+void Client::http_requset_post_cb(struct evhttp_request *req, void *arg) {
   struct http_request_post *http_req_post = (struct http_request_post *) arg;
   switch (req->response_code) {
     case HTTP_OK: {
@@ -196,7 +196,7 @@ static void http_requset_post_cb(struct evhttp_request *req, void *arg) {
       return;
   }
 }
-static void http_requset_get_cb(struct evhttp_request *req, void *arg) {
+void Client::http_requset_get_cb(struct evhttp_request *req, void *arg) {
   struct http_request_get *http_req_get = (struct http_request_get *) arg;
   switch (req->response_code) {
     case HTTP_OK: {
@@ -211,6 +211,7 @@ static void http_requset_get_cb(struct evhttp_request *req, void *arg) {
       tmp[len] = '\0';
       LOG(INFO) <<"print the body:";
       LOG(INFO) << "HTML BODY:" <<  tmp;
+      body_write_buffer_ = tmp;
       free(tmp);
 
       event_base_loopexit(http_req_get->base, 0);
@@ -261,6 +262,7 @@ void* Client::http_request_new(struct event_base* base,
   if (req_get_flag == EVHTTP_REQ_POST) {
     struct http_request_post *http_req_post =
         (struct http_request_post *) http_req_get;
+
     if (content_type == NULL) {
       content_type = HTTP_CONTENT_TYPE_URL_ENCODED;
     }
@@ -308,6 +310,7 @@ bool Client::start_http_requset(struct event_base* base,
   http_req_get = (struct http_request_get*)http_request_new(base, url,
                                                            req_get_flag,
                                                            content_type, data);
+
   LOG(INFO) << "req_get_flag: " << req_get_flag;
   LOG(INFO) << "start_http_requset: " << start_url_request(http_req_get, req_get_flag, connection_time_);
   LOG(INFO) << "bufsize: " << http_req_get->req->body_size;
@@ -317,7 +320,8 @@ bool Client::start_http_requset(struct event_base* base,
   return true;
 }
 
-
+string Client::body_write_buffer_ = "";
+string Client::head_write_buffer_ = "";
 
 Client::Client()
     : response_code_(0),
@@ -366,7 +370,7 @@ Client::~Client() {
 }
 
 const string& Client::ResponseHeader() const {
-   return head_write_buffer_;
+  return head_write_buffer_;
 }
 
 const string& Client::ResponseBody() const {

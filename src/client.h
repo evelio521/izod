@@ -86,13 +86,19 @@ class Client {
 
  private:
 
-//  void print_request_head_info(struct evkeyvalq *header);
-//  void print_uri_parts_info(const struct evhttp_uri * http_uri);
-//  void http_requset_post_cb(struct evhttp_request *req, void *arg);
-//  void http_requset_get_cb(struct evhttp_request *req, void *arg);
-//  int  start_url_request(struct http_request_get *http_req,
-//                         int req_get_flag,
-//                         int conn_time);
+static  void print_request_head_info(struct evkeyvalq *header);
+static  void print_uri_parts_info(const struct evhttp_uri * http_uri);
+static  void http_requset_post_cb(struct evhttp_request *req, void *arg);
+static  void http_requset_get_cb(struct evhttp_request *req, void *arg);
+static  int  start_url_request(struct http_request_get *http_req,
+                         int req_get_flag,
+                         int conn_time);
+//  定义FUNC类型是一个指向函数的指针，该函数参数为void*，返回值为void*
+//  typedef void (*FUNC)(struct evhttp_request *req, void *arg);
+//  强制转换func()的类型
+//  FUNC http_requset_post_callback = (FUNC)&Client::http_requset_post_cb;
+//  强制转换func()的类型
+//  FUNC http_requset_get_callback = (FUNC)&Client::http_requset_get_cb;
 
   void *http_request_new(struct event_base* base,
                          const char *url,
@@ -108,8 +114,8 @@ class Client {
                            const char* data);
 
   int response_code_;  // NOLINT
-  string  head_write_buffer_;
-  string  body_write_buffer_;
+  static string  head_write_buffer_;
+  static string  body_write_buffer_;
   string post_data_;
   // Only support Get or Post Method
   evhttp_cmd_type method_;
