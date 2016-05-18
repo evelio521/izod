@@ -325,12 +325,7 @@ bool Client::start_http_requset(struct event_base* base,
                                                            req_get_flag,
                                                            content_type, data);
 
-  LOG(INFO) << "req_get_flag: " << req_get_flag;
-  LOG(INFO) << "start_http_requset: " << start_url_request(http_req_get, req_get_flag, connection_time_);
-  LOG(INFO) << "bufsize: " << http_req_get->req->body_size;
-  LOG(INFO) << "response_code_: " << http_req_get->req->response_code;
-  response_code_ = http_req_get->req->response_code;
-  //http_request_free(http_req_get, req_get_flag);
+  start_url_request(http_req_get, req_get_flag, connection_time_);
   return true;
 }
 
@@ -411,12 +406,10 @@ void Client::SetFetchTimeout(int time_second) {
 
 
 bool Client::IsHeaderTooLarge() const {
-  //return head_write_buffer_->is_full;
   return false;
 }
 
 bool Client::IsBodyTooLarge() const {
-  //return body_write_buffer_->is_full;
   return false;
 }
 
