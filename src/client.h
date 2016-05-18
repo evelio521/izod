@@ -113,7 +113,7 @@ static  int  start_url_request(struct http_request_get *http_req,
                            const char *content_type,
                            const char* data);
 
-  int response_code_;  // NOLINT
+  static int response_code_;  // NOLINT
   static string  head_write_buffer_;
   static string  body_write_buffer_;
   string post_data_;

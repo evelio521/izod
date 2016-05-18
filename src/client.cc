@@ -172,14 +172,21 @@ void Client::http_requset_post_cb(struct evhttp_request *req, void *arg) {
       tmp[len] = '\0';
       LOG(INFO) <<"print the body:";
       LOG(INFO) << "HTML BODY:" <<  tmp;
+      body_write_buffer_ = tmp;
+      response_code_ = HTTP_OK;
+      head_write_buffer_ = "";
       free(tmp);
 
       event_base_loopexit(http_req_post->base, 0);
       break;
     }
-    case HTTP_MOVEPERM:
+    case HTTP_MOVEPERM: {
       LOG(INFO) << "the uri moved permanently";
+      body_write_buffer_ = "";
+      head_write_buffer_ = "";
+      response_code_ = HTTP_MOVEPERM;
       break;
+    }
     case HTTP_MOVETEMP: {
       const char *new_location = evhttp_find_header(req->input_headers,
                                                     "Location");
@@ -188,16 +195,17 @@ void Client::http_requset_post_cb(struct evhttp_request *req, void *arg) {
       http_req_post->uri = new_uri;
       start_url_request((struct http_request_get *) http_req_post,
                         EVHTTP_REQ_POST, MOVETEMP_TIMEOUT);
-      return;
+      break;
     }
 
     default:
       event_base_loopexit(http_req_post->base, 0);
-      return;
   }
+  return;
 }
 void Client::http_requset_get_cb(struct evhttp_request *req, void *arg) {
   struct http_request_get *http_req_get = (struct http_request_get *) arg;
+
   switch (req->response_code) {
     case HTTP_OK: {
       struct evbuffer* buf = evhttp_request_get_input_buffer(req);
@@ -212,14 +220,20 @@ void Client::http_requset_get_cb(struct evhttp_request *req, void *arg) {
       LOG(INFO) <<"print the body:";
       LOG(INFO) << "HTML BODY:" <<  tmp;
       body_write_buffer_ = tmp;
+      response_code_ = HTTP_OK;
+      head_write_buffer_ = "";
       free(tmp);
-
       event_base_loopexit(http_req_get->base, 0);
       break;
     }
-    case HTTP_MOVEPERM:
+    case HTTP_MOVEPERM: {
       LOG(INFO) << "the uri moved permanently";
+      body_write_buffer_ = "";
+      head_write_buffer_ = "";
+      response_code_ = HTTP_MOVEPERM;
+      event_base_loopexit(http_req_get->base, 0);
       break;
+    }
     case HTTP_MOVETEMP: {
       const char *new_location = evhttp_find_header(req->input_headers,
                                                     "Location");
@@ -227,13 +241,13 @@ void Client::http_requset_get_cb(struct evhttp_request *req, void *arg) {
       evhttp_uri_free(http_req_get->uri);
       http_req_get->uri = new_uri;
       start_url_request(http_req_get, EVHTTP_REQ_GET, MOVETEMP_TIMEOUT);
-      return;
+      break;
     }
 
     default:
       event_base_loopexit(http_req_get->base, 0);
-      return;
   }
+  return;
 }
 
 /************************** New/Free Function ******************************/
@@ -322,10 +336,10 @@ bool Client::start_http_requset(struct event_base* base,
 
 string Client::body_write_buffer_ = "";
 string Client::head_write_buffer_ = "";
+int Client::response_code_ = HTTP_SERVUNAVAIL;
 
 Client::Client()
-    : response_code_(0),
-      http_req_post(NULL),
+    : http_req_post(NULL),
       http_req_get(NULL),
       time_(3000),
       connection_time_(3000){
@@ -413,12 +427,12 @@ void Client::Reset() {
 
   if (http_req_post != NULL) {
     http_request_free((struct http_request_get *)http_req_post, EVHTTP_REQ_POST);
-    // free(http_req_post);
+    free(http_req_post);
   }
 
   if (http_req_get != NULL) {
     http_request_free(http_req_get, EVHTTP_REQ_GET);
-    // free(http_req_get);
+    free(http_req_get);
   }
 }
 
