@@ -16,6 +16,19 @@
 
 #include "compat.h"
 
+/* Stops putting the code inside the UTIL namespace */
+#define _END_UTIL_NAMESPACE_ }
+
+/* Puts following code inside the UTIL namespace */
+#define _START_UTIL_NAMESPACE_ namespace util {
+
+
+/* Stops putting the code inside the ERROR namespace */
+#define _END_ERROR_NAMESPACE_ }
+
+/* Puts following code inside the ERROR namespace */
+#define _START_ERROR_NAMESPACE_ namespace error {
+
 /* Stops putting the code inside the Client namespace */
 #define _END_CLIENT_NAMESPACE_ }
 
