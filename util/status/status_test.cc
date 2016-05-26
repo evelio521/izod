@@ -85,7 +85,7 @@ TEST(StatusFailedPrecondition, Demo) {
   EXPECT_TRUE(util::error::FAILED_PRECONDITION ==
       StatusFailedPrecondition("StatusFailedPrecondition").error_code());
   EXPECT_EQ("StatusFailedPrecondition",
-            StatusFailedPrecondition("StatusFailedPrecondition").error_message());
+      StatusFailedPrecondition("StatusFailedPrecondition").error_message());
 }
 _END_UTIL_NAMESPACE_
 

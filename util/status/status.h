@@ -282,40 +282,5 @@ inline util::Status StatusFailedPrecondition(const string& msg) {
 
 _END_UTIL_NAMESPACE_
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #endif  //__STATUS_H_
 
