@@ -19,60 +19,74 @@
 
 _START_UTIL_NAMESPACE_
 
-
-TEST(StatusOK, demo) {
-  EXPECT_TRUE(util::error::OK ==  StatusOk().error_code());
-
-//  Status StatusAbortedTest(const string& msg) {
-//    return STATUS_FROM_ENUM(ABORTED, msg);
-//  }
-//
-//
-//  Status StatusCanceledTest(const string& msg) {
-//    return STATUS_FROM_ENUM(CANCELLED, msg);
-//  }
-//
-//  Status StatusDataLossTest(const string& msg) {
-//    return STATUS_FROM_ENUM(DATA_LOSS, msg);
-//  }
-//
-//  Status StatusDeadlineExceededTest(const string& msg) {
-//    return STATUS_FROM_ENUM(DEADLINE_EXCEEDED, msg);
-//  }
-//
-//  Status StatusInternalErrorTest(const string& msg) {
-//    return STATUS_FROM_ENUM(INTERNAL, msg);
-//  }
-//
-//  Status StatusInvalidArgumentTest(const string& msg) {
-//    return STATUS_FROM_ENUM(INVALID_ARGUMENT, msg);
-//  }
-//
-//  Status StatusOutOfRangeTest(const string& msg) {
-//    return STATUS_FROM_ENUM(OUT_OF_RANGE, msg);
-//  }
-//
-//  Status StatusPermissionDeniedTest(const string& msg) {
-//    return STATUS_FROM_ENUM(PERMISSION_DENIED, msg);
-//  }
-//
-//  Status StatusUnimplementedTest(const string& msg) {
-//    return STATUS_FROM_ENUM(UNIMPLEMENTED, msg);
-//  }
-//
-//  Status StatusUnknownTest(const string& msg) {
-//    return STATUS_FROM_ENUM(UNKNOWN, msg);
-//  }
-//
-//  Status StatusResourceExhaustedTest(const string& msg) {
-//    return STATUS_FROM_ENUM(RESOURCE_EXHAUSTED, msg);
-//  }
-//
-//  Status StatusFailedPreconditionTest(const string& msg) {
-//    return STATUS_FROM_ENUM(FAILED_PRECONDITION, msg);
-//  }
+TEST(StatusOK, Demo) {
+  EXPECT_TRUE(util::error::OK == StatusOk().error_code());
+  EXPECT_EQ("", StatusOk().error_message());
 }
-
+TEST(StatusAborted, Demo) {
+  EXPECT_TRUE(util::error::ABORTED ==
+      StatusAborted("StatusAborted").error_code());
+  EXPECT_EQ("StatusAborted", StatusAborted("StatusAborted").error_message());
+}
+TEST(StatusDataLoss, Demo) {
+  EXPECT_TRUE(util::error::DATA_LOSS ==
+      StatusDataLoss("StatusDataLoss").error_code());
+  EXPECT_EQ("StatusDataLoss", StatusDataLoss("StatusDataLoss").error_message());
+}
+TEST(StatusDeadlineExceeded, Demo) {
+  EXPECT_TRUE(util::error::DEADLINE_EXCEEDED ==
+      StatusDeadlineExceeded("StatusDeadlineExceeded").error_code());
+  EXPECT_EQ("StatusDeadlineExceeded",
+      StatusDeadlineExceeded("StatusDeadlineExceeded").error_message());
+}
+TEST(StatusInternalError, Demo) {
+  EXPECT_TRUE(util::error::INTERNAL ==
+      StatusInternalError("StatusInternalError").error_code());
+  EXPECT_EQ("StatusInternalError",
+      StatusInternalError("StatusInternalError").error_message());
+}
+TEST(StatusInvalidArgument, Demo) {
+  EXPECT_TRUE(util::error::INVALID_ARGUMENT ==
+      StatusInvalidArgument("StatusInvalidArgument").error_code());
+  EXPECT_EQ("StatusInvalidArgument",
+      StatusInvalidArgument("StatusInvalidArgument").error_message());
+}
+TEST(StatusOutOfRange, Demo) {
+  EXPECT_TRUE(util::error::OUT_OF_RANGE ==
+      StatusOutOfRange("StatusOutOfRange").error_code());
+  EXPECT_EQ("StatusOutOfRange",
+      StatusOutOfRange("StatusOutOfRange").error_message());
+}
+TEST(StatusPermissionDenied, Demo) {
+  EXPECT_TRUE(util::error::PERMISSION_DENIED ==
+     StatusPermissionDenied("StatusPermissionDenied").error_code());
+  EXPECT_EQ("StatusPermissionDenied",
+     StatusPermissionDenied("StatusPermissionDenied").error_message());
+}
+TEST(StatusUnimplemented, Demo) {
+  EXPECT_TRUE(util::error::UNIMPLEMENTED ==
+      StatusUnimplemented("StatusUnimplemented").error_code());
+  EXPECT_EQ("StatusUnimplemented",
+      StatusUnimplemented("StatusUnimplemented").error_message());
+}
+TEST(StatusUnknown, Demo) {
+  EXPECT_TRUE(util::error::UNKNOWN ==
+      StatusUnknown("StatusUnknown").error_code());
+  EXPECT_EQ("StatusUnknown",
+      StatusUnknown("StatusUnknown").error_message());
+}
+TEST(StatusResourceExhausted, Demo) {
+  EXPECT_TRUE(util::error::RESOURCE_EXHAUSTED ==
+      StatusResourceExhausted("StatusResourceExhausted").error_code());
+  EXPECT_EQ("StatusResourceExhausted",
+      StatusResourceExhausted("StatusResourceExhausted").error_message());
+}
+TEST(StatusFailedPrecondition, Demo) {
+  EXPECT_TRUE(util::error::FAILED_PRECONDITION ==
+      StatusFailedPrecondition("StatusFailedPrecondition").error_code());
+  EXPECT_EQ("StatusFailedPrecondition",
+            StatusFailedPrecondition("StatusFailedPrecondition").error_message());
+}
 _END_UTIL_NAMESPACE_
 
 
