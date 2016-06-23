@@ -84,15 +84,18 @@ class Client {
   // Drop it temporarily
   void SetProxy(const string& proxy_host, int proxy_port);
 
- private:
+  void SetConnectionKeepAlive(bool isKeepAlive);
 
-static  void print_request_head_info(struct evkeyvalq *header);
-static  void print_uri_parts_info(const struct evhttp_uri * http_uri);
-static  void http_requset_post_cb(struct evhttp_request *req, void *arg);
-static  void http_requset_get_cb(struct evhttp_request *req, void *arg);
-static  int  start_url_request(struct http_request_get *http_req,
-                         int req_get_flag,
-                         int conn_time);
+  bool GetConnectionKeepAlive();
+
+ private:
+  static void print_request_head_info(struct evkeyvalq *header);
+  static void print_uri_parts_info(const struct evhttp_uri * http_uri);
+  static void http_requset_post_cb(struct evhttp_request *req, void *arg);
+  static void http_requset_get_cb(struct evhttp_request *req, void *arg);
+  static int start_url_request(struct http_request_get *http_req,
+                               int req_get_flag, int conn_time,
+                               bool isKeepAlive);
 //  定义FUNC类型是一个指向函数的指针，该函数参数为void*，返回值为void*
 //  typedef void (*FUNC)(struct evhttp_request *req, void *arg);
 //  强制转换func()的类型
@@ -100,22 +103,18 @@ static  int  start_url_request(struct http_request_get *http_req,
 //  强制转换func()的类型
 //  FUNC http_requset_get_callback = (FUNC)&Client::http_requset_get_cb;
 
-  void *http_request_new(struct event_base* base,
-                         const char *url,
-                         int req_get_flag,
-                         const char *content_type,
-                         const char* data);
+  void *http_request_new(struct event_base* base, const char *url,
+                         int req_get_flag, const char *content_type,
+                         const char* data, bool isKeepAlive);
   void http_request_free(struct http_request_get *http_req_get,
                          int req_get_flag);
-  bool start_http_requset(struct event_base* base,
-                           const char *url,
-                           int req_get_flag,
-                           const char *content_type,
-                           const char* data);
+  bool start_http_requset(struct event_base* base, const char *url,
+                          int req_get_flag, const char *content_type,
+                          const char* data, bool isKeepAlive);
 
   static int response_code_;  // NOLINT
-  static string  head_write_buffer_;
-  static string  body_write_buffer_;
+  static string head_write_buffer_;
+  static string body_write_buffer_;
   string post_data_;
   // Only support Get or Post Method
   evhttp_cmd_type method_;
@@ -123,6 +122,7 @@ static  int  start_url_request(struct http_request_get *http_req,
   int connection_time_;
   struct http_request_get *http_req_get;
   struct http_request_post *http_req_post;
+  bool isConnectionKeepAlive_;
   DISALLOW_COPY_AND_ASSIGN(Client);
 };
 _END_CLIENT_NAMESPACE_  // namespace client

@@ -21,7 +21,9 @@
 int main(int argc, char **argv) {
   google::ParseCommandLineFlags(&argc, &argv, false);
   client::Client cli;
-  cli.FetchGetUrl("http://127.0.0.1:8888/json?query=999999&qq=3&yy=4");
+  //cli.SetConnectionClose(true);
+  cli.SetConnectionKeepAlive(true);
+  cli.FetchGetUrl("http://127.0.0.1:8888/default?query=999999&qq=3&yy=4");
   cout << "================================" << endl;
   cout << cli.ResponseBody() << endl;
   cout << cli.ResponseHeader() << endl;

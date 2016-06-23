@@ -49,6 +49,7 @@ struct http_request_get {
     struct event_base *base;
     struct evhttp_connection *cn;
     struct evhttp_request *req;
+    bool isKeepAlive;
 };
 
 struct http_request_post {
@@ -56,6 +57,7 @@ struct http_request_post {
     struct event_base *base;
     struct evhttp_connection *cn;
     struct evhttp_request *req;
+    bool isKeepAlive;
     char *content_type;
     char *post_data;
 };
@@ -101,7 +103,8 @@ void Client::print_uri_parts_info(const struct evhttp_uri * http_uri) {
 
 int Client::start_url_request(struct http_request_get *http_req,
                               int req_get_flag,
-                              int conn_time) {
+                              int conn_time,
+                              bool isKeepAlive) {
   if (http_req->cn) {
     LOG(INFO) << "evhttp connection free";
     evhttp_connection_free(http_req->cn);
@@ -150,6 +153,11 @@ int Client::start_url_request(struct http_request_get *http_req,
     free(path_query);
   }
   /** Set the header properties */
+  if (isKeepAlive) {
+    LOG(INFO) << "KEEPALIVE";
+    evhttp_add_header(http_req->req->input_headers, "Connection", "keep-alive");
+  }
+
   evhttp_add_header(http_req->req->output_headers, "Host",
                     evhttp_uri_get_host(http_req->uri));
   evhttp_connection_set_timeout(http_req->cn, conn_time);
@@ -194,7 +202,9 @@ void Client::http_requset_post_cb(struct evhttp_request *req, void *arg) {
       evhttp_uri_free(http_req_post->uri);
       http_req_post->uri = new_uri;
       start_url_request((struct http_request_get *) http_req_post,
-                        EVHTTP_REQ_POST, MOVETEMP_TIMEOUT);
+                        EVHTTP_REQ_POST,
+                        MOVETEMP_TIMEOUT,
+                        http_req_post->isKeepAlive);
       break;
     }
 
@@ -240,7 +250,8 @@ void Client::http_requset_get_cb(struct evhttp_request *req, void *arg) {
       struct evhttp_uri *new_uri = evhttp_uri_parse(new_location);
       evhttp_uri_free(http_req_get->uri);
       http_req_get->uri = new_uri;
-      start_url_request(http_req_get, EVHTTP_REQ_GET, MOVETEMP_TIMEOUT);
+      start_url_request(http_req_get, EVHTTP_REQ_GET, MOVETEMP_TIMEOUT,
+                        http_req_get->isKeepAlive);
       break;
     }
 
@@ -259,7 +270,8 @@ void* Client::http_request_new(struct event_base* base,
                                const char *url,
                                int req_get_flag,
                                const char *content_type,
-                               const char* data) {
+                               const char* data,
+                               bool isKeepAlive) {
   int len = 0;
   if (req_get_flag == EVHTTP_REQ_GET) {
     len = sizeof(struct http_request_get);
@@ -272,6 +284,7 @@ void* Client::http_request_new(struct event_base* base,
   print_uri_parts_info(http_req_get->uri);
 
   http_req_get->base = base;
+  http_req_get->isKeepAlive = isKeepAlive;
 
   if (req_get_flag == EVHTTP_REQ_POST) {
     struct http_request_post *http_req_post =
@@ -320,12 +333,15 @@ bool Client::start_http_requset(struct event_base* base,
                                 const char *url,
                                 int req_get_flag,
                                 const char *content_type,
-                                const char* data) {
+                                const char* data,
+                                bool isKeepAlive) {
   http_req_get = (struct http_request_get*)http_request_new(base, url,
                                                            req_get_flag,
-                                                           content_type, data);
+                                                           content_type,
+                                                           data,
+                                                           isKeepAlive);
 
-  start_url_request(http_req_get, req_get_flag, connection_time_);
+  start_url_request(http_req_get, req_get_flag, connection_time_,isKeepAlive);
   return true;
 }
 
@@ -337,7 +353,8 @@ Client::Client()
     : http_req_post(NULL),
       http_req_get(NULL),
       time_(3000),
-      connection_time_(3000){
+      connection_time_(3000),
+      isConnectionKeepAlive_(false){
   Reset();
 }
 
@@ -400,6 +417,15 @@ void Client::SetFetchTimeout(int time_second) {
   time_ = time_second;
 }
 
+void Client::SetConnectionKeepAlive(bool isKeepAlive) {
+  this->isConnectionKeepAlive_ = isKeepAlive;
+}
+
+bool Client::GetConnectionKeepAlive() {
+  return isConnectionKeepAlive_;
+}
+
+
 //void Client::SetAuth(const string& user, const string& password) {
 //  curl_easy_setopt(curl_handle_, CURLOPT_USERPWD, (user + ":" + password).c_str());
 //}
@@ -417,6 +443,7 @@ void Client::Reset() {
   response_code_ = 0;
   post_data_.clear();
   method_ = EVHTTP_REQ_GET;
+  isConnectionKeepAlive_ = false;
 
   if (http_req_post != NULL) {
     http_request_free((struct http_request_get *)http_req_post, EVHTTP_REQ_POST);
@@ -434,8 +461,12 @@ bool Client::FetchPostUrl(const string& url) {
   SetHttpMethod(EVHTTP_REQ_POST);
   struct timeval tv = {0,time_};
   event_base_loopexit(event_loop.base(),&tv);
-  start_http_requset(event_loop.base(), url.c_str(),
-    EVHTTP_REQ_POST,HTTP_CONTENT_TYPE_URL_ENCODED, post_data_.c_str());
+  start_http_requset(event_loop.base(),
+                     url.c_str(),
+                     EVHTTP_REQ_POST,
+                     HTTP_CONTENT_TYPE_URL_ENCODED,
+                     post_data_.c_str(),
+                     isConnectionKeepAlive_);
   event_loop.Dispatch();
   event_base_free(event_loop.base());
   return true;
@@ -446,8 +477,12 @@ bool Client::FetchGetUrl(const string& url) {
   SetHttpMethod(EVHTTP_REQ_GET);
   struct timeval tv = {0,time_};
   event_base_loopexit(event_loop.base(),&tv);
-  start_http_requset(event_loop.base(), url.c_str(),
-         EVHTTP_REQ_GET, NULL, NULL);
+  start_http_requset(event_loop.base(),
+                     url.c_str(),
+                     EVHTTP_REQ_GET,
+                     NULL,
+                     NULL,
+                     isConnectionKeepAlive_);
   event_loop.Dispatch();
   event_base_free(event_loop.base());
   return true;
